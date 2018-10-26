@@ -19,6 +19,18 @@ public class Engines : MonoBehaviour
     const float MinManeuverSpeedThreshold = 2f;
     float manueverSpeedRange = MaxManeuverSpeedThreshold - MinManeuverSpeedThreshold;
 
+    public void ChangeSpeed(int amount)
+    {
+        CurrentSpeed += amount;
+        Debug.Log("Speed changed to " + CurrentSpeed);
+    }
+
+    public void UpdateTurningOrder(Vector3 mapClickPoint)
+    {
+        targetDirection = Vector3.Normalize(mapClickPoint - transform.position);
+        turnDirection = Mathf.Sign(Vector3.Cross(transform.forward, targetDirection).y);
+    }
+
     void Start()
     {
         targetDirection = transform.forward;
@@ -69,17 +81,5 @@ public class Engines : MonoBehaviour
     {
         float turnSpeedFactor = (Mathf.Clamp(CurrentSpeed, MinManeuverSpeedThreshold, MaxManeuverSpeedThreshold) - MinManeuverSpeedThreshold) / manueverSpeedRange;
         return new float[] { (turnSpeedFactor * (1f - MinTurnDelta)) + MinTurnDelta, turnSpeedFactor };
-    }
-
-    public void ChangeSpeed(int amount)
-    {
-        CurrentSpeed += amount;
-        Debug.Log("Speed changed to " + CurrentSpeed);
-    }
-
-    public void UpdateTurningOrder(Vector3 mapClickPoint)
-    {
-        targetDirection = Vector3.Normalize(mapClickPoint - transform.position);
-        turnDirection = Mathf.Sign(Vector3.Cross(transform.forward, targetDirection).y);
     }
 }

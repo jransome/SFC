@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Health))]
 public class Targetable : MonoBehaviour
 {
+    Engines engines;
+    Health health;
+
     public float CurrentHealth
     {
         get
@@ -17,8 +21,10 @@ public class Targetable : MonoBehaviour
         }
     }
 
-    Engines engines;
-    Health health;
+    public void TakeDamage(float amount)
+    {
+        health.CurrentHealth -= amount;
+    }
 
     void Start()
     {

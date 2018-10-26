@@ -28,6 +28,11 @@ public class InputManager : MonoBehaviour {
             playerShip.Target = null;
         }
 
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            playerShip.Fire();
+        }
+
         CheckMouseInput();
     }
 

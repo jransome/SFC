@@ -4,6 +4,8 @@ public class OnBoardCamera : MonoBehaviour
 {
     public Bridge ship;
 
+    Transform sTransform;
+
     public Bridge Ship
     {
         get { return ship; }
@@ -22,8 +24,6 @@ public class OnBoardCamera : MonoBehaviour
             return null;
         }
     }
-
-    Transform sTransform;
 
     void Start()
     {
