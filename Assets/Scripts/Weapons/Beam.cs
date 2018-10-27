@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Beam : MonoBehaviour
+public class Beam : Weapon
 {
     public float Cooldown = 1f;
     public float BeamSpeed = 100f;
@@ -31,9 +31,11 @@ public class Beam : MonoBehaviour
         }
     }
 
-    public void Fire(Targetable target)
+    public override void Fire(Targetable target)
     {
         if (!HasCooledDown) return;
+        if (!IsInArc(target)) return;
+        
         initialTargetDirection = Vector3.Normalize(target.transform.position - transform.position);
 
         beamRenderer.SetPosition(1, Vector3.zero);

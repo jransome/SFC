@@ -3,9 +3,7 @@ using UnityEngine;
 
 public class Bridge : MonoBehaviour
 {
-
-    public Beam pb;
-
+    public Weapon[] Weapons;
     public Targetable Target;
     public List<Targetable> VisibleTargets = new List<Targetable>();
 
@@ -24,12 +22,16 @@ public class Bridge : MonoBehaviour
     public void Fire()
     {
         if (!Target) return;
-        pb.Fire(Target);
+        foreach (Weapon weapon in Weapons)
+        {
+            weapon.Fire(Target);
+        }
     }
 
     void Start()
     {
         engines = GetComponent<Engines>();
         health = GetComponent<Health>();
+        Weapons = GetComponentsInChildren<Weapon>();
     }
 }
