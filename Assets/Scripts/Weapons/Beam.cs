@@ -82,7 +82,7 @@ public class Beam : Weapon
                 float remainingAttack = (Damage / DischargeTime) * Time.fixedDeltaTime;
                 foreach (RaycastHit hit in hits)
                 {
-                    remainingAttack = hit.collider.GetComponent<IDamageable>().ApplyDamage(remainingAttack, hit.point);
+                    remainingAttack = hit.collider.GetComponent<IDamageable>().ApplyDamage(remainingAttack, initialTargetDirection);
                     if (remainingAttack == 0) // weapon energy completely absorbed
                     {
                         distanceCovered = hit.distance;

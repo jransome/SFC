@@ -18,7 +18,7 @@ public class Targetable : MonoBehaviour, IDamageable
         get { return engines.CurrentSpeed; }
     }
 
-    public float ApplyDamage(float amount, Vector3 impactPoint)
+    public float ApplyDamage(float amount, Vector3 attackVector)
     {
         return health.ApplyDamage(amount);
     }

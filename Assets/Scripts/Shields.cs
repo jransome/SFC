@@ -22,19 +22,25 @@ public class Shields : MonoBehaviour, IDamageable
         shieldCollider.enabled = false;
     }
 
-    public float ApplyDamage(float amount, Vector3 impactPoint)
+    public float ApplyDamage(float amount, Vector3 attackVector)
     {
-        impactPoint.y = transform.position.y;
-        Quaternion impactRotation = Quaternion.LookRotation(impactPoint - transform.position);
-        float impactHeading = impactRotation.eulerAngles.y;
+        Vector3 shipFwd = transform.forward;
+        float impactHeading = Vector3.SignedAngle(
+            new Vector3(shipFwd.x, 0, shipFwd.z), 
+            new Vector3(-attackVector.x, 0, -attackVector.z), 
+            Vector3.up); // Axis is ignored, known Unity issue
 
-        if (impactHeading > 330 || impactHeading <= 30)
+        //impactPoint.y = transform.position.y;
+        //Quaternion impactRotation = Quaternion.LookRotation(impactPoint - transform.position);
+        //float impactHeading = impactRotation.eulerAngles.y;
+
+        if (impactHeading > -30 && impactHeading <= 30)
         {
             Debug.Log("Front");
             return ShieldFacings[0].ApplyDamage(amount);
         }
 
-        if (impactHeading > 270 && impactHeading <= 330)
+        if (impactHeading > -90 && impactHeading <= -30)
         {
             Debug.Log("Front-left");
             return ShieldFacings[1].ApplyDamage(amount);
@@ -46,7 +52,7 @@ public class Shields : MonoBehaviour, IDamageable
             return ShieldFacings[2].ApplyDamage(amount);
         }
 
-        if (impactHeading > 210 && impactHeading <= 270)
+        if (impactHeading > -150 && impactHeading <= -90)
         {
             Debug.Log("Rear-left");
             return ShieldFacings[3].ApplyDamage(amount);

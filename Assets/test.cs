@@ -6,17 +6,17 @@ public class test : MonoBehaviour {
 
     public Transform target;
 
-    public float ArcCtr, ArcRng;
-    WeaponArc arc;
 
 	// Use this for initialization
 	void Start () {
-        arc = new WeaponArc(ArcCtr, ArcRng, transform);
     }
 	
 	// Update is called once per frame
-	void Update () {
-        Debug.Log(arc.IsInArc(target.position - transform.position));
-        //Debug.DrawRay(transform.position, arc.ArcCentreLocalDirection);
-    }
+	void Update ()
+	{
+	    Vector3 targetFwd = target.forward;
+	    targetFwd.y = transform.forward.y;
+	    float angle = Vector3.SignedAngle(transform.forward, targetFwd, Vector3.up);
+        Debug.Log(angle);
+	}
 }
