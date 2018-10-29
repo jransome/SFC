@@ -9,7 +9,6 @@ public class Bridge : MonoBehaviour
 
     int targetIndex = -1;
     Engines engines;
-    Health health;
 
     public Engines Engines { get { return engines; } }
 
@@ -31,7 +30,6 @@ public class Bridge : MonoBehaviour
     void Start()
     {
         engines = GetComponent<Engines>();
-        health = GetComponent<Health>();
         Weapons = GetComponentsInChildren<Weapon>();
     }
 }

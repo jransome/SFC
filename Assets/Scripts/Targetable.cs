@@ -1,34 +1,36 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Health))]
-public class Targetable : MonoBehaviour
+public class Targetable : MonoBehaviour, IDamageable
 {
-    Engines engines;
-    Health health;
+    public float StartingHitPoints = 10f;
+    public float hp;
+
+    private Health health;
+    private Engines engines;
 
     public float CurrentHealth
     {
-        get
-        {
-            return health.CurrentHealth;
-        }
+        get { return health.CurrentHealth; }
     }
+
     public float CurrentSpeed
     {
-        get
-        {
-            return engines.CurrentSpeed;
-        }
+        get { return engines.CurrentSpeed; }
     }
 
-    public void TakeDamage(float amount)
+    public float ApplyDamage(float amount, Vector3 impactPoint)
     {
-        health.CurrentHealth -= amount;
+        return health.ApplyDamage(amount);
     }
 
-    void Start()
+    private void Start()
     {
         engines = GetComponent<Engines>();
-        health = GetComponent<Health>();
+        health = new Health(StartingHitPoints);
+    }
+
+    void Update()
+    {
+        hp = CurrentHealth;
     }
 }

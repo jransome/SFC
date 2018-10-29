@@ -1,13 +1,42 @@
 ﻿using UnityEngine;
 
-public class Health : MonoBehaviour
+public class Health
 {
-    public float StartingHealth;
+    private readonly float startingHealth;
+    private float currentHealth;
 
-    public float CurrentHealth { get; set; }
+    public bool IsDead { get; private set; }
 
-    void Start()
+    public float CurrentHealth
     {
-        CurrentHealth = StartingHealth;
+        get { return currentHealth; }
+        private set
+        {
+            if (value <= 0)
+            {
+                currentHealth = 0;
+                Die();
+            }
+            else
+                currentHealth = value;
+        }
+    }
+
+    public Health(float startingHitPoints)
+    {
+        CurrentHealth = startingHealth = startingHitPoints;
+    }
+
+    public float ApplyDamage(float amount)
+    {
+        CurrentHealth -= amount;
+        float remainingDamage = amount - CurrentHealth;
+        return remainingDamage < 0 ? 0 : remainingDamage;
+    }
+
+    public void Die()
+    {
+        IsDead = true;
+        Debug.Log("destroyed!");
     }
 }

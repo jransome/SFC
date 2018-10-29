@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class Beam : Weapon
 {
@@ -53,11 +55,10 @@ public class Beam : Weapon
         beamRenderer.enabled = false;
     }
 
-    RaycastHit CalcHit(Vector3 firePosition, Vector3 targetDirection)
+    private List<RaycastHit> CheckForHits()
     {
-        RaycastHit hit;
-        Physics.Raycast(firePosition, targetDirection, out hit, Range);
-        return hit;
+        RaycastHit[] unsorted = Physics.RaycastAll(transform.position, initialTargetDirection, distanceCovered);
+        return unsorted.OrderBy(rch => rch.distance).ToList();
     }
 
     void Start()
@@ -74,12 +75,20 @@ public class Beam : Weapon
         if (IsDischarging)
         {
             distanceCovered += BeamSpeed * Time.deltaTime;
-            RaycastHit hit = CalcHit(transform.position, initialTargetDirection);
-            if (hit.collider != null && distanceCovered > hit.distance)
+            List<RaycastHit> hits = CheckForHits();
+            if (hits.Count > 0)
             {
-                distanceCovered = hit.distance;
-                hit.collider.GetComponent<Targetable>().TakeDamage((Damage / DischargeTime) * Time.fixedDeltaTime); 
                 // damage is only dealt once the beam has hit the target, therefore total damage dealt is slightly less (unless beam hits instantly)
+                float remainingAttack = (Damage / DischargeTime) * Time.fixedDeltaTime;
+                foreach (RaycastHit hit in hits)
+                {
+                    remainingAttack = hit.collider.GetComponent<IDamageable>().ApplyDamage(remainingAttack, hit.point);
+                    if (remainingAttack == 0) // weapon energy completely absorbed
+                    {
+                        distanceCovered = hit.distance;
+                        break;
+                    }
+                }
             }
             beamRenderer.SetPosition(1, transform.InverseTransformDirection(initialTargetDirection) * distanceCovered);
         }
