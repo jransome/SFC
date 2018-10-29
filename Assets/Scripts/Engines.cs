@@ -22,7 +22,6 @@ public class Engines : MonoBehaviour
     public void ChangeSpeed(int amount)
     {
         CurrentSpeed += amount;
-        Debug.Log("Speed changed to " + CurrentSpeed);
     }
 
     public void UpdateTurningOrder(Vector3 mapClickPoint)

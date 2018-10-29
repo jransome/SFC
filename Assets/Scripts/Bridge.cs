@@ -4,13 +4,19 @@ using UnityEngine;
 public class Bridge : MonoBehaviour
 {
     public Weapon[] Weapons;
-    public Targetable Target;
     public List<Targetable> VisibleTargets = new List<Targetable>();
 
-    int targetIndex = -1;
-    Engines engines;
+    private Engines engines;
+    private Targetable target;
+    private int targetIndex = -1;
 
     public Engines Engines { get { return engines; } }
+
+    public Targetable Target
+    {
+        get { return target ? target : null; }
+        set { target = value; }
+    }
 
     public void CycleTargets()
     {
@@ -27,7 +33,7 @@ public class Bridge : MonoBehaviour
         }
     }
 
-    void Start()
+    private void Start()
     {
         engines = GetComponent<Engines>();
         Weapons = GetComponentsInChildren<Weapon>();

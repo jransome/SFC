@@ -2,46 +2,23 @@
 
 public class OnBoardCamera : MonoBehaviour
 {
-    public Bridge ship;
-
-    Transform sTransform;
-
-    public Bridge Ship
-    {
-        get { return ship; }
-        set
-        {
-            ship = value;
-            sTransform = value.transform;
-        }
-    }
-
-    public Transform TargetTransform
-    {
-        get
-        {
-            if (ship.Target) return ship.Target.transform;
-            return null;
-        }
-    }
-
-    void Start()
-    {
-        Debug.Log(ship.transform);
-        Ship = ship;
-    }
+    Transform controlledTransform;
+    Transform targetTransform;
 
     void Update()
     {
-        transform.position = sTransform.position;
+        controlledTransform = InputManager.Instance.ControlledShip.transform; // TODO refactor to event based system
+        targetTransform = InputManager.Instance.ControlledShip.Target ? InputManager.Instance.ControlledShip.Target.transform : null;
+
+        transform.position = controlledTransform.position;
         Quaternion targetLookAt;
-        if (TargetTransform)
+        if (targetTransform != null)
         {
-            targetLookAt = Quaternion.LookRotation(TargetTransform.position - transform.position);
+            targetLookAt = Quaternion.LookRotation(targetTransform.position - transform.position);
         }
         else
         {
-            targetLookAt = Quaternion.LookRotation(sTransform.forward);
+            targetLookAt = Quaternion.LookRotation(controlledTransform.forward);
         }
 
         targetLookAt.x = 0f;
