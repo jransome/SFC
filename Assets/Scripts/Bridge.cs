@@ -1,21 +1,33 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Targetable))]
 public class Bridge : MonoBehaviour
 {
     public Weapon[] Weapons;
     public List<Targetable> VisibleTargets = new List<Targetable>();
 
-    private Engines engines;
+    private Targetable self;
     private Targetable target;
     private int targetIndex = -1;
 
-    public Engines Engines { get { return engines; } }
+    public Shields Shields { get; private set; }
+    public Engines Engines { get; private set; }
 
     public Targetable Target
     {
         get { return target ? target : null; }
         set { target = value; }
+    }
+
+    public float CurrentSpeed
+    {
+        get { return Engines.CurrentSpeed; }
+    }
+
+    public float HullHealth
+    {
+        get { return self.CurrentHealth; }
     }
 
     public void CycleTargets()
@@ -35,7 +47,9 @@ public class Bridge : MonoBehaviour
 
     private void Start()
     {
-        engines = GetComponent<Engines>();
+        self = GetComponent<Targetable>();
+        Shields = GetComponentInChildren<Shields>();
+        Engines = GetComponent<Engines>();
         Weapons = GetComponentsInChildren<Weapon>();
     }
 }
