@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Targetable : MonoBehaviour, IDamageable
 {
@@ -6,6 +7,7 @@ public class Targetable : MonoBehaviour, IDamageable
     public float hp;
 
     private Health health;
+    private Shields shields;
     private Engines engines;
 
     public float CurrentHealth
@@ -18,6 +20,11 @@ public class Targetable : MonoBehaviour, IDamageable
         get { return engines.CurrentSpeed; }
     }
 
+    public IList<float> ShieldCurrentHealths
+    {
+        get { return shields != null ? shields.ShieldCurrentHealths : null; }
+    }
+
     public float ApplyDamage(float amount, Vector3 attackVector)
     {
         return health.ApplyDamage(amount);
@@ -25,8 +32,9 @@ public class Targetable : MonoBehaviour, IDamageable
 
     private void Start()
     {
-        engines = GetComponent<Engines>();
         health = new Health(StartingHitPoints);
+        shields = GetComponentInChildren<Shields>();
+        engines = GetComponent<Engines>();
     }
 
     void Update()

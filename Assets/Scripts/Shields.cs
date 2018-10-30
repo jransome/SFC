@@ -1,13 +1,20 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
 public class Shields : MonoBehaviour, IDamageable
 {
-    public float[] ShieldRatings = new[] {10f, 10f, 10f, 10f}; // Bow, Bow flanks, Stern flanks, Stern
+    public float[] ShieldRatings = {10f, 10f, 10f, 10f}; // Bow, Bow flanks, Stern flanks, Stern
 
     private Collider shieldCollider;
+    private List<Health> shieldHealths;
 
-    public Health[] ShieldFacings { get; private set; }
+    public IList<float> ShieldCurrentHealths
+    {
+        get { return shieldHealths.Select(shield => shield.CurrentHealth).ToList(); }
+    }
+
     public bool Up { get; private set; }
 
     public void RaiseShields()
@@ -37,51 +44,49 @@ public class Shields : MonoBehaviour, IDamageable
         if (impactHeading > -30 && impactHeading <= 30)
         {
             Debug.Log("Front");
-            return ShieldFacings[0].ApplyDamage(amount);
+            return shieldHealths[0].ApplyDamage(amount);
         }
 
         if (impactHeading > -90 && impactHeading <= -30)
         {
             Debug.Log("Front-left");
-            return ShieldFacings[1].ApplyDamage(amount);
+            return shieldHealths[1].ApplyDamage(amount);
         }
 
         if (impactHeading > 30 && impactHeading <= 90)
         {
             Debug.Log("Front-right");
-            return ShieldFacings[2].ApplyDamage(amount);
+            return shieldHealths[2].ApplyDamage(amount);
         }
 
         if (impactHeading > -150 && impactHeading <= -90)
         {
             Debug.Log("Rear-left");
-            return ShieldFacings[3].ApplyDamage(amount);
+            return shieldHealths[3].ApplyDamage(amount);
         }
 
         if (impactHeading > 90 && impactHeading <= 150)
         {
             Debug.Log("Rear-right");
-            return ShieldFacings[4].ApplyDamage(amount);
+            return shieldHealths[4].ApplyDamage(amount);
         }
 
         Debug.Log("Rear");
-        return ShieldFacings[5].ApplyDamage(amount);
+        return shieldHealths[5].ApplyDamage(amount);
     }
 
     private void Start()
     {
         shieldCollider = GetComponent<Collider>();
-        ShieldFacings = new Health[]
+        shieldHealths = new List<Health>()
         {
-            new Health(ShieldRatings[0]), // Bow
-            new Health(ShieldRatings[1]), // Prt-Bow
-            new Health(ShieldRatings[1]), // Str-Bow
-            new Health(ShieldRatings[2]), // Prt-Aft
-            new Health(ShieldRatings[2]), // Str-Aft
-            new Health(ShieldRatings[3]), // Aft
+            new Health(ShieldRatings[0]),
+            new Health(ShieldRatings[1]),
+            new Health(ShieldRatings[1]),
+            new Health(ShieldRatings[2]),
+            new Health(ShieldRatings[2]),
+            new Health(ShieldRatings[3])
         };
         RaiseShields();
     }
-    
-    
 }

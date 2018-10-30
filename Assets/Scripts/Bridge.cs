@@ -25,7 +25,7 @@ public class Bridge : MonoBehaviour
         get { return Engines.CurrentSpeed; }
     }
 
-    public float HullHealth
+    public float CurrentHealth
     {
         get { return self.CurrentHealth; }
     }

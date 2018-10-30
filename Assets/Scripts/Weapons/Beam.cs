@@ -75,6 +75,7 @@ public class Beam : Weapon
         if (IsDischarging)
         {
             distanceCovered += BeamSpeed * Time.deltaTime;
+            // TODO don't hit self
             List<RaycastHit> hits = CheckForHits();
             if (hits.Count > 0)
             {

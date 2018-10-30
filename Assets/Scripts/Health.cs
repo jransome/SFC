@@ -22,6 +22,11 @@ public class Health
         }
     }
 
+    public float CurrentHealthPercent
+    {
+        get { return currentHealth / startingHealth * 100; }
+    }
+
     public Health(float startingHitPoints)
     {
         CurrentHealth = startingHealth = startingHitPoints;
