@@ -1,0 +1,8 @@
+refactor ui system to use events? observable collections?
+add weapons to ui status
+add engine telegraph to ui
+make more weapon types
+make beam weapons track targets (a bit)
+contour shields
+add acceleration to ship speed
+

@@ -57,8 +57,9 @@ public class Beam : Weapon
 
     private List<RaycastHit> CheckForHits()
     {
-        RaycastHit[] unsorted = Physics.RaycastAll(transform.position, initialTargetDirection, distanceCovered);
-        return unsorted.OrderBy(rch => rch.distance).ToList();
+        List<RaycastHit> unsorted = new List<RaycastHit>(Physics.RaycastAll(transform.position, initialTargetDirection, distanceCovered));
+        unsorted.RemoveAll(hit => hit.)
+        return unsorted.OrderBy(hit => hit.distance).ToList();
     }
 
     void Start()
