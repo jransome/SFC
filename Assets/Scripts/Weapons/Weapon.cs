@@ -2,6 +2,7 @@
 
 public abstract class Weapon : MonoBehaviour
 {
+    public GameObject Self { protected get; set; }
     public WeaponArc Arc { get; set; }
 
     public abstract void Fire(Targetable target);

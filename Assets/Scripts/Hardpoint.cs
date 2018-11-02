@@ -7,9 +7,11 @@ public class Hardpoint : MonoBehaviour
 
     public GameObject Device { get; set; }
 
-    void Awake()
+    private void Awake()
     {
         Device = Instantiate(DevicePrefab, transform.position, Quaternion.AngleAxis(ArcCentre, Vector3.up), transform);
-        Device.GetComponent<Weapon>().SetArc(ArcCentre, ArcRange, transform.parent);
+        Weapon weapon = Device.GetComponent<Weapon>();
+        weapon.SetArc(ArcCentre, ArcRange, transform.parent);
+        weapon.Self = transform.parent.parent.gameObject;
     }
 }

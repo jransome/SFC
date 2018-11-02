@@ -58,11 +58,11 @@ public class Beam : Weapon
     private List<RaycastHit> CheckForHits()
     {
         List<RaycastHit> unsorted = new List<RaycastHit>(Physics.RaycastAll(transform.position, initialTargetDirection, distanceCovered));
-        unsorted.RemoveAll(hit => hit.)
+        unsorted.RemoveAll(hit => hit.collider.gameObject == Self);
         return unsorted.OrderBy(hit => hit.distance).ToList();
     }
 
-    void Start()
+    private void Start()
     {
         sfx = GetComponent<AudioSource>();
         flash = GetComponent<Light>();
@@ -76,7 +76,6 @@ public class Beam : Weapon
         if (IsDischarging)
         {
             distanceCovered += BeamSpeed * Time.deltaTime;
-            // TODO don't hit self
             List<RaycastHit> hits = CheckForHits();
             if (hits.Count > 0)
             {
