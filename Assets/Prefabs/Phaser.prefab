@@ -325,6 +325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Cooldown: 1
   BeamSpeed: 600
+  BeamAcceleration: 2000
   DischargeTime: 0.5
   Damage: 10
   Range: 500

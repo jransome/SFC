@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class TacticalUI : MonoBehaviour
 {
+    public Slider EngineTelegraph;
     public Text Speedometer;
     public Text HullIntegrity;
     public Text TargetHullIntegrity;
@@ -26,6 +27,18 @@ public class TacticalUI : MonoBehaviour
         }
     }
 
+    private void EngineTelegraphListener(float value)
+    {
+        int newSpeed = Mathf.FloorToInt(value);
+        InputManager.Instance.SetEngineTelegraph(newSpeed);
+    }
+
+    private void Start()
+    {
+        EngineTelegraph.wholeNumbers = true;
+        EngineTelegraph.onValueChanged.AddListener(EngineTelegraphListener);
+    }
+
     private void Update()
     {
         // TODO refactor to event based system
@@ -34,6 +47,7 @@ public class TacticalUI : MonoBehaviour
         Speedometer.text = "Speed: " + InputManager.Instance.ControlledShip.CurrentSpeed;
         HullIntegrity.text = "Hull: " + ToOneDecimalPoint(InputManager.Instance.ControlledShip.CurrentHealth);
         UpdateShieldStatus(ShipStatus, InputManager.Instance.ControlledShip.Shields.ShieldCurrentHealths);
+        EngineTelegraph.value = InputManager.Instance.ControlledShip.Engines.CurrentSpeed;
 
         if (InputManager.Instance.ControlledShip.Target == null) return;
         TargetHullIntegrity.text = ToOneDecimalPoint(InputManager.Instance.ControlledShip.Target.CurrentHealth);

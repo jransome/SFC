@@ -5,18 +5,18 @@ using UnityEngine;
 public class Beam : Weapon
 {
     public float Cooldown = 1f;
-    public float BeamSpeed = 100f;
+    public float BeamSpeed = 1000f;
     public float DischargeTime = 0.7f;
     public float Damage = 1f;
     public float Range = 500f;
 
-    LineRenderer beamRenderer;
-    AudioSource sfx;
-    Light flash;
+    private LineRenderer beamRenderer;
+    private AudioSource sfx;
+    private Light flash;
 
-    Vector3 initialTargetDirection;
-    float lastFireTime = -1000f;
-    float distanceCovered = 0f;
+    private Vector3 initialTargetDirection;
+    private float lastFireTime = -1000f;
+    private float distanceCovered = 0f;
 
     public bool IsDischarging
     {
