@@ -2,26 +2,29 @@
 
 public class Engines : MonoBehaviour
 {
-    public int CurrentSpeed { get; set; }
-    public int MaxSpeed;
-    public float YawRate;
-    public float RollSmooth;
-    public float RollRate;
-    public float MaxRollAngle;
+    //public int MaxSpeed = 30;
+    public float Acceleration = 10f;
+    public float YawRate = 15f;
+    public float RollSmooth = 0.3f;
+    public float RollRate = 50f;
+    public float MaxRollAngle = 35f;
 
-    Rigidbody rb;
-    float turnDirection;
-    Vector3 targetDirection;
+    private Rigidbody rb;
+    private float turnDirection;
+    private Vector3 targetDirection;
 
     // To be extracted to config
     const float MinTurnDelta = 0.3f;
-    const float MaxManeuverSpeedThreshold = 10f; // Speed ship needs to be travelling at for highest turn speed to be applied
+    const float MaxManeuverSpeedThreshold = 10f; // Speed ship needs to be traveling at for highest turn speed to be applied
     const float MinManeuverSpeedThreshold = 2f;
-    float manueverSpeedRange = MaxManeuverSpeedThreshold - MinManeuverSpeedThreshold;
+    private float maneuverSpeedRange = MaxManeuverSpeedThreshold - MinManeuverSpeedThreshold;
+
+    public int DesiredSpeed { get; set; }
+    public float CurrentSpeed { get; private set; }
 
     public void ChangeSpeed(int amount)
     {
-        CurrentSpeed += amount;
+        DesiredSpeed += amount;
     }
 
     public void UpdateTurningOrder(Vector3 mapClickPoint)
@@ -30,24 +33,24 @@ public class Engines : MonoBehaviour
         turnDirection = Mathf.Sign(Vector3.Cross(transform.forward, targetDirection).y);
     }
 
-    void Start()
+    private void Move()
     {
-        targetDirection = transform.forward;
-        rb = GetComponent<Rigidbody>();
-    }
+        if (Mathf.Abs(DesiredSpeed - CurrentSpeed) > 0.05f)
+        {
+            if (DesiredSpeed > CurrentSpeed)
+                CurrentSpeed += Acceleration * Time.deltaTime;
+            else if (DesiredSpeed < CurrentSpeed)
+                CurrentSpeed -= Acceleration * Time.deltaTime;
+        }
+        else
+        {
+            CurrentSpeed = DesiredSpeed;
+        }
 
-    void FixedUpdate()
-    {
-        Move();
-        Turn();
-    }
-
-    void Move()
-    {
         rb.MovePosition(transform.position + transform.forward * CurrentSpeed * Time.deltaTime);
     }
 
-    void Turn()
+    private void Turn()
     {
         Debug.DrawRay(transform.position, targetDirection * 10, Color.red);
         Debug.DrawRay(transform.position, transform.forward * 10, Color.blue);
@@ -57,13 +60,13 @@ public class Engines : MonoBehaviour
         rb.MoveRotation(CalcYaw(turnDirection) * CalcRoll(turnDirection) * rb.rotation);
     }
 
-    Quaternion CalcYaw(float turnDirection)
+    private Quaternion CalcYaw(float turnDirection)
     {
         // TODO: smoothdamp this?
         return Quaternion.AngleAxis(turnDirection * YawRate * CalcMaxTurnDelta()[0] * Time.deltaTime, Vector3.up);
     }
 
-    Quaternion CalcRoll(float turnDirection)
+    private Quaternion CalcRoll(float turnDirection)
     {
         //TODO: use dot product (or something) to start counter rolling before turn finishes.
         float targetRollAngle = -turnDirection * MaxRollAngle * CalcMaxTurnDelta()[1];
@@ -75,10 +78,22 @@ public class Engines : MonoBehaviour
         //Debug.Log("current " + currentRoll + " targetRollAngle: " + targetRollAngle + " nextRollAngle " + nextRollAngle+  " rollangledelta " + rollAngleDelta);
         return Quaternion.AngleAxis(rollAngleDelta, transform.forward);
     }
- 
-    float[] CalcMaxTurnDelta()
+
+    private float[] CalcMaxTurnDelta()
     {
-        float turnSpeedFactor = (Mathf.Clamp(CurrentSpeed, MinManeuverSpeedThreshold, MaxManeuverSpeedThreshold) - MinManeuverSpeedThreshold) / manueverSpeedRange;
+        float turnSpeedFactor = (Mathf.Clamp(CurrentSpeed, MinManeuverSpeedThreshold, MaxManeuverSpeedThreshold) - MinManeuverSpeedThreshold) / maneuverSpeedRange;
         return new float[] { (turnSpeedFactor * (1f - MinTurnDelta)) + MinTurnDelta, turnSpeedFactor };
+    }
+
+    private void Start()
+    {
+        targetDirection = transform.forward;
+        rb = GetComponent<Rigidbody>();
+    }
+
+    private void FixedUpdate()
+    {
+        Move();
+        Turn();
     }
 }

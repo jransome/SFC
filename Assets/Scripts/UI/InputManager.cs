@@ -34,7 +34,7 @@ public class InputManager : MonoBehaviour
 
     public void SetEngineTelegraph(int value)
     {
-        ControlledShip.Engines.CurrentSpeed = value;
+        ControlledShip.Engines.DesiredSpeed = value;
     }
 
     private void CheckLeftMouseInput()
