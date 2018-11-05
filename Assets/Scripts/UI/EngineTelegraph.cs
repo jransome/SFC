@@ -27,8 +27,14 @@ public class EngineTelegraph : MonoBehaviour
         }
     }
 
+    public void UpdateDesiredSpeedValue(float desiredSpeed)
+    {
+        Slider.value = desiredSpeed;
+    }
+
     private void Start()
     {
+        Slider.wholeNumbers = true;
         minSpeed = Slider.minValue; // TODO: set min max values from ship engines
         speedRange = Slider.maxValue - minSpeed;
         maxSpeedPosition = SliderRect.rect.width;
