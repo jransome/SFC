@@ -17,11 +17,7 @@ public class Projectile : MonoBehaviour
         Debug.DrawRay(transform.position, Vector3.Normalize(attackVector) * 10, Color.green, 5f);
 
         remainingAttack = other.GetComponent<IDamageable>().ApplyDamage(remainingAttack, attackVector);
-        Debug.Log(remainingAttack); // TODO bug here?
-        if (remainingAttack == 0) // weapon energy completely absorbed
-        {
-            Destroy(gameObject);
-        }
+        if (remainingAttack == 0) Destroy(gameObject); // weapon energy completely absorbed
     }
 
     private void Start()

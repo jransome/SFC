@@ -3,7 +3,7 @@
 public class Engines : MonoBehaviour
 {
     //public int MaxSpeed = 30;
-    public float Acceleration = 10f;
+    public float Acceleration = 0.05f;
     public float YawRate = 15f;
     public float RollSmooth = 0.3f;
     public float RollRate = 50f;
@@ -13,7 +13,7 @@ public class Engines : MonoBehaviour
     private float turnDirection;
     private Vector3 targetDirection;
 
-    // To be extracted to config
+    // TODO extract to config
     const float MinTurnDelta = 0.3f;
     const float MaxManeuverSpeedThreshold = 10f; // Speed ship needs to be traveling at for highest turn speed to be applied
     const float MinManeuverSpeedThreshold = 2f;
@@ -35,18 +35,7 @@ public class Engines : MonoBehaviour
 
     private void Move()
     {
-        if (Mathf.Abs(DesiredSpeed - CurrentSpeed) > 0.05f)
-        {
-            if (DesiredSpeed > CurrentSpeed)
-                CurrentSpeed += Acceleration * Time.deltaTime;
-            else if (DesiredSpeed < CurrentSpeed)
-                CurrentSpeed -= Acceleration * Time.deltaTime;
-        }
-        else
-        {
-            CurrentSpeed = DesiredSpeed;
-        }
-
+        CurrentSpeed = Mathf.MoveTowards(CurrentSpeed, DesiredSpeed, Acceleration);
         rb.MovePosition(transform.position + transform.forward * CurrentSpeed * Time.deltaTime);
     }
 

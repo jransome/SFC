@@ -530,7 +530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 628722209d392c94ea5a560b70dddf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Acceleration: 100
+  Acceleration: 0.02
   YawRate: 12
   RollSmooth: 0.3
   RollRate: 50
@@ -2939,7 +2939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 628722209d392c94ea5a560b70dddf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Acceleration: 10
+  Acceleration: 0.02
   YawRate: 12
   RollSmooth: 0.3
   RollRate: 50
