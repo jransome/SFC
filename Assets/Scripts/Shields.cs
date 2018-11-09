@@ -31,8 +31,6 @@ public class Shields : MonoBehaviour, IDamageable
 
     public float ApplyDamage(float amount, Vector3 attackVector)
     {
-
-        // TODO bug with running into projectiles going in same direction
         Vector3 shipFwd = transform.forward;
         float impactHeading = Vector3.SignedAngle(
             new Vector3(shipFwd.x, 0, shipFwd.z), 

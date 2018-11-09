@@ -34,9 +34,9 @@ public class Health
 
     public float ApplyDamage(float amount)
     {
-        CurrentHealth -= amount;
-        float remainingDamage = amount - CurrentHealth;
-        return remainingDamage < 0 ? 0 : remainingDamage;
+        float remainingHealth = CurrentHealth - amount;
+        CurrentHealth = remainingHealth;
+        return remainingHealth < 0 ? -remainingHealth : 0;
     }
 
     public void Die()
