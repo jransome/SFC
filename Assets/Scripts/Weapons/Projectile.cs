@@ -3,11 +3,15 @@
 [RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour
 {
-    public float Speed = 50f;
     public float Damage = 50f;
 
     private Rigidbody rb;
     private float remainingAttack;
+
+    public void Launch(float initialSpeed)
+    {
+        rb.velocity = transform.forward * initialSpeed;
+    }
 
     // TODO ignore collision with self
 
@@ -20,10 +24,9 @@ public class Projectile : MonoBehaviour
         if (remainingAttack == 0) Destroy(gameObject); // weapon energy completely absorbed
     }
 
-    private void Start()
+    private void Awake()
     {
         remainingAttack = Damage;
         rb = GetComponent<Rigidbody>();
-        rb.velocity = transform.forward * Speed;
     }
 }

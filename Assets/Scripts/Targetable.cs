@@ -6,9 +6,21 @@ public class Targetable : MonoBehaviour, IDamageable
     public float StartingHitPoints = 10f;
     public float hp;
 
+    private Transform t;
+    private Rigidbody rb;
     private Health health;
     private Shields shields;
     private Engines engines;
+
+    public Vector3 Position
+    {
+        get { return t.position; }
+    }
+
+    public Vector3 Velocity
+    {
+        get { return rb ? rb.velocity : Vector3.zero; }
+    }
 
     public float CurrentHealth
     {
@@ -32,6 +44,8 @@ public class Targetable : MonoBehaviour, IDamageable
 
     private void Start()
     {
+        t = transform;
+        rb = GetComponent<Rigidbody>();
         health = new Health(StartingHitPoints);
         shields = GetComponentInChildren<Shields>();
         engines = GetComponent<Engines>();

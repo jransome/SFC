@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Shields : MonoBehaviour, IDamageable
 {
+    public bool LogSuff = false; // for debug
     public float[] ShieldRatings = {10f, 10f, 10f, 10f}; // Bow, Bow flanks, Stern flanks, Stern
 
     private Collider shieldCollider;
@@ -12,7 +13,7 @@ public class Shields : MonoBehaviour, IDamageable
 
     public IList<float> ShieldCurrentHealths
     {
-        get { return shieldHealths.Select(shield => shield.CurrentHealth).ToList(); }
+        get { return shieldHealths.Select(shield => shield.CurrentHealthPercent).ToList(); }
     }
 
     public bool Up { get; private set; }
@@ -39,35 +40,35 @@ public class Shields : MonoBehaviour, IDamageable
 
         if (impactHeading > -30 && impactHeading <= 30)
         {
-            Debug.Log("Front");
+            if(LogSuff) Debug.Log("Front");
             return shieldHealths[0].ApplyDamage(amount);
         }
 
         if (impactHeading > -90 && impactHeading <= -30)
         {
-            Debug.Log("Front-left");
+            if(LogSuff) Debug.Log("Front-left");
             return shieldHealths[1].ApplyDamage(amount);
         }
 
         if (impactHeading > 30 && impactHeading <= 90)
         {
-            Debug.Log("Front-right");
+            if(LogSuff) Debug.Log("Front-right");
             return shieldHealths[2].ApplyDamage(amount);
         }
 
         if (impactHeading > -150 && impactHeading <= -90)
         {
-            Debug.Log("Rear-left");
+            if(LogSuff) Debug.Log("Rear-left");
             return shieldHealths[3].ApplyDamage(amount);
         }
 
         if (impactHeading > 90 && impactHeading <= 150)
         {
-            Debug.Log("Rear-right");
+            if(LogSuff) Debug.Log("Rear-right");
             return shieldHealths[4].ApplyDamage(amount);
         }
 
-        Debug.Log("Rear");
+        if(LogSuff) Debug.Log("Rear");
         return shieldHealths[5].ApplyDamage(amount);
     }
 
