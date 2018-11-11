@@ -11,6 +11,7 @@ public class ShipController : MonoBehaviour
     private Targetable target;
     private int targetIndex = -1;
 
+    public List<Hardpoint> Hardpoints { get; private set; }
     public Shields Shields { get; private set; }
     public Engines Engines { get; private set; }
 
@@ -61,7 +62,16 @@ public class ShipController : MonoBehaviour
         Target = null;
     }
 
-    public void Fire()
+    public void FireSelected(IList<Hardpoint> hardpoints)
+    {
+        if (!Target) return;
+        foreach (Hardpoint h in hardpoints)
+        {
+            h.Weapon.Fire(Target);
+        }
+    }
+
+    public void FireAny()
     {
         if (!Target) return;
         foreach (Weapon weapon in weapons)
@@ -73,6 +83,7 @@ public class ShipController : MonoBehaviour
     private void Start()
     {
         self = GetComponent<Targetable>();
+        Hardpoints = new List<Hardpoint>(GetComponentsInChildren<Hardpoint>());
         Shields = GetComponentInChildren<Shields>();
         Engines = GetComponent<Engines>();
         weapons = GetComponentsInChildren<Weapon>();

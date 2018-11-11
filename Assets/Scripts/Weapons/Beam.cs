@@ -25,6 +25,7 @@ public class Beam : Weapon
             return Time.time < (lastFireTime + DischargeTime);
         }
     }
+
     public bool HasCooledDown
     {
         get
@@ -33,10 +34,10 @@ public class Beam : Weapon
         }
     }
 
-    public override void Fire(Targetable target)
+    public override void Fire(Targetable target = null)
     {
-        if (!HasCooledDown) return;
-        if (!IsInArc(target)) return;
+        target = target ? target : Target; // yea.
+        if (!CanFireOn(target)) return;
         
         initialTargetDirection = Vector3.Normalize(target.transform.position - transform.position);
 
@@ -53,6 +54,11 @@ public class Beam : Weapon
         distanceCovered = 0f;
         flash.enabled = false;
         beamRenderer.enabled = false;
+    }
+
+    private bool CanFireOn(Targetable target)
+    {
+        return target && HasCooledDown && IsInArc(target);
     }
 
     private List<RaycastHit> CheckForHits()

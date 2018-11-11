@@ -3,9 +3,10 @@
 public abstract class Weapon : MonoBehaviour
 {
     public GameObject Self { protected get; set; }
+    public Targetable Target { get; set; }
     public WeaponArc Arc { get; set; }
 
-    public abstract void Fire(Targetable target);
+    public abstract void Fire(Targetable target = null);
 
     public void SetArc(float arcCentre, float arcRange, Transform ship)
     {
