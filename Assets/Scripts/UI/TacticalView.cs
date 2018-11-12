@@ -6,8 +6,10 @@ public class TacticalView : MonoBehaviour
 {
     public ShipController[] ControllableShips; // TODO move out to a game manager type thing
 
+    public StatusPanel ShipStatusPanel;
+    public HardpointsView HardpointsView;
+
     public OnBoardCamera OnBoardCamera;
-    public HardpointWeaponIcons HardpointWeaponIcons;
     public EngineTelegraph EngineTelegraph;
     public ShieldStatus OwnShieldStatus;
     public ShieldStatus TargetShieldStatus;
@@ -16,7 +18,7 @@ public class TacticalView : MonoBehaviour
     public Text HullIntegrity;
     public Text TargetHullIntegrity;
 
-    private int controlIndex = 0;
+    private int controlIndex = 1;
     private static Plane mapPlane = new Plane(Vector3.up, Vector3.zero);
 
     public static TacticalView Instance { get; private set; }
@@ -63,6 +65,9 @@ public class TacticalView : MonoBehaviour
     {
         controlIndex = controlIndex == 0 ? 1 : 0;
         ControlledShip = ControllableShips[controlIndex];
+        ShipStatusPanel.RefreshUI();
+        HardpointsView = ShipStatusPanel.HardpointsView;
+
         OnBoardCamera.ControlledTransform = ControlledShip.transform;
         if(ControlledShip.Target != null)
         {
@@ -81,7 +86,7 @@ public class TacticalView : MonoBehaviour
         else if (Instance != this)
             Destroy(gameObject);
 
-        ControlledShip = ControllableShips[0];
+        CycleControlledShip();
         OnBoardCamera.ControlledTransform = ControlledShip.transform;
         EngineTelegraph.Slider.onValueChanged.AddListener(SetDesiredSpeed);
     }
@@ -132,7 +137,7 @@ public class TacticalView : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            ControlledShip.FireSelected(HardpointWeaponIcons.SelectedWeaponHardpoints);
+            ControlledShip.FireSelected(HardpointsView.SelectedWeaponHardpoints);
         }
 
         CheckLeftMouseInput();

@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Targetable))]
 public class ShipController : MonoBehaviour
 {
+    public GameObject StatusUIPrefab;
     public List<Targetable> VisibleTargets = new List<Targetable>();
 
     private Weapon[] weapons;
@@ -80,7 +81,7 @@ public class ShipController : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         self = GetComponent<Targetable>();
         Hardpoints = new List<Hardpoint>(GetComponentsInChildren<Hardpoint>());
