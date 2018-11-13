@@ -15,9 +15,7 @@ public class HardpointsView : MonoBehaviour
         Debug.Log(HardpointIcons.Count);
         foreach (Hardpoint hp in shipHardpoints)
         {
-            var x = HardpointIcons.Find(hi => hi.name == hp.name);
-            Debug.Log(x);
-                x.Hardpoint = hp;
+            HardpointIcons.Find(hi => hi.name == hp.name).Hardpoint = hp;
         }
     }
 }

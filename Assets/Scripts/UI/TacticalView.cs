@@ -4,25 +4,32 @@ using UnityEngine.EventSystems;
 
 public class TacticalView : MonoBehaviour
 {
-    public ShipController[] ControllableShips; // TODO move out to a game manager type thing
+    public Ship[] ControllableShips; // TODO move out to a game manager type thing
+
+    public EnginesView EnginesView;
+
 
     public StatusPanel ShipStatusPanel;
     public HardpointsView HardpointsView;
 
     public OnBoardCamera OnBoardCamera;
-    public EngineTelegraph EngineTelegraph;
     public ShieldStatus OwnShieldStatus;
     public ShieldStatus TargetShieldStatus;
 
-    public Text Speedometer;
     public Text HullIntegrity;
     public Text TargetHullIntegrity;
 
-    private int controlIndex = 1;
+
+    private int controlIndex = 0;
     private static Plane mapPlane = new Plane(Vector3.up, Vector3.zero);
 
     public static TacticalView Instance { get; private set; }
-    public ShipController ControlledShip { get; set; }
+    public Ship ControlledShip { get; private set; }
+
+    public delegate void ControlChangedHandler(Ship controlledShip);
+
+    public event ControlChangedHandler ControlChanged;
+
 
     private void CheckLeftMouseInput()
     {
@@ -52,31 +59,22 @@ public class TacticalView : MonoBehaviour
     private void CycleTargets()
     {
         ControlledShip.CycleTargets();
-        OnBoardCamera.TargetTransform = ControlledShip.Target.transform;
-    }
-
-    private void SetDesiredSpeed(float value)
-    {
-        int newSpeed = Mathf.FloorToInt(value);
-        ControlledShip.SetDesiredSpeed(newSpeed);
+        OnBoardCamera.TargetTransform = ControlledShip.Target.transform; // TODO should this be here?
     }
 
     private void CycleControlledShip()
     {
         controlIndex = controlIndex == 0 ? 1 : 0;
-        ControlledShip = ControllableShips[controlIndex];
-        ShipStatusPanel.RefreshUI();
+        ChangeControlledShip(controlIndex);
         HardpointsView = ShipStatusPanel.HardpointsView;
+    }
 
-        OnBoardCamera.ControlledTransform = ControlledShip.transform;
-        if(ControlledShip.Target != null)
-        {
-            OnBoardCamera.TargetTransform = ControlledShip.Target.transform;
-        }
-        else
-        {
-            OnBoardCamera.TargetTransform = null;
-        }
+    private void ChangeControlledShip(int shipId)
+    {
+        ControlledShip = ControllableShips[shipId];
+        Debug.Log(ControlledShip.Engines);
+        EnginesView.ChangeControlled(ControlledShip.Engines);
+        if (ControlChanged != null) ControlChanged(ControlledShip);
     }
 
     private void Start()
@@ -86,20 +84,15 @@ public class TacticalView : MonoBehaviour
         else if (Instance != this)
             Destroy(gameObject);
 
-        CycleControlledShip();
-        OnBoardCamera.ControlledTransform = ControlledShip.transform;
-        EngineTelegraph.Slider.onValueChanged.AddListener(SetDesiredSpeed);
+        ChangeControlledShip(0);
     }
 
     private void Update()
     {
         if (ControlledShip == null) return;
 
-        Speedometer.text = "Speed: " + UIHelpers.ToOneDecimalPoint(ControlledShip.CurrentSpeed);
         HullIntegrity.text = "Hull: " + UIHelpers.ToOneDecimalPoint(ControlledShip.CurrentHealth);
         OwnShieldStatus.UpdateStatus(ControlledShip.Shields.ShieldCurrentHealths);
-        EngineTelegraph.UpdateSpeedIndicator(ControlledShip.CurrentSpeed);
-        EngineTelegraph.UpdateDesiredSpeedValue(ControlledShip.DesiredSpeed);
 
         if (ControlledShip.Target != null)
         {
@@ -117,12 +110,12 @@ public class TacticalView : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            ControlledShip.ChangeSpeed(-1);
+            EnginesView.ChangeDesiredSpeed(-1);
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            ControlledShip.ChangeSpeed(1);
+            EnginesView.ChangeDesiredSpeed(1);
         }
 
         if (Input.GetKeyDown(KeyCode.T))

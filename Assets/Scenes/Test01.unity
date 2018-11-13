@@ -142,10 +142,9 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 1040349185}
   - {fileID: 2121495649}
   - {fileID: 2010417844}
-  - {fileID: 1025183104}
+  - {fileID: 365887962}
   m_Father: {fileID: 948216134}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -225,13 +224,12 @@ MonoBehaviour:
   ControllableShips:
   - {fileID: 176319861}
   - {fileID: 1639249342}
+  EnginesView: {fileID: 365887963}
   ShipStatusPanel: {fileID: 1517747442}
   HardpointsView: {fileID: 0}
   OnBoardCamera: {fileID: 284574737}
-  EngineTelegraph: {fileID: 1025183106}
   OwnShieldStatus: {fileID: 1319314313}
   TargetShieldStatus: {fileID: 1911424653}
-  Speedometer: {fileID: 1040349186}
   HullIntegrity: {fileID: 1976935211}
   TargetHullIntegrity: {fileID: 1138061897}
 --- !u!1 &166466624
@@ -418,6 +416,58 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &365887961
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 365887962}
+  - component: {fileID: 365887963}
+  m_Layer: 5
+  m_Name: EnginesView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &365887962
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 365887961}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1025183104}
+  - {fileID: 1040349185}
+  m_Father: {fileID: 10452048}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 360, y: 25}
+  m_SizeDelta: {x: 300, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &365887963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 365887961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12e26e6ea11502444afa99fe0c500e97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Slider: {fileID: 1025183105}
+  SpeedIndicator: {fileID: 1028035675}
+  SliderRect: {fileID: 1149645456}
+  HandleRect: {fileID: 713540089}
+  Speedometer: {fileID: 1040349186}
 --- !u!1 &378808990
 GameObject:
   m_ObjectHideFlags: 0
@@ -832,7 +882,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1025183104}
   - component: {fileID: 1025183105}
-  - component: {fileID: 1025183106}
   m_Layer: 5
   m_Name: EngineTelegraph
   m_TagString: Untagged
@@ -846,19 +895,19 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1025183103}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1216105654}
   - {fileID: 1149645456}
   - {fileID: 1028035675}
-  m_Father: {fileID: 10452048}
-  m_RootOrder: 3
+  m_Father: {fileID: 365887962}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 300, y: 25}
+  m_AnchoredPosition: {x: 90.00001, y: 14.999995}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1025183105
@@ -920,21 +969,6 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &1025183106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1025183103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12e26e6ea11502444afa99fe0c500e97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Slider: {fileID: 1025183105}
-  SpeedIndicator: {fileID: 1028035675}
-  SliderRect: {fileID: 1025183104}
-  HandleRect: {fileID: 713540089}
 --- !u!114 &1026997147 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114423645851143462, guid: 0f6a132048b0f7d48b2593bc46daf879,
@@ -1037,12 +1071,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 10452048}
-  m_RootOrder: 0
+  m_Father: {fileID: 365887962}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 390, y: 35}
+  m_AnchoredPosition: {x: 180, y: 25}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1040349186
@@ -2376,7 +2410,7 @@ RectTransform:
   - {fileID: 1517747441}
   - {fileID: 1911424652}
   m_Father: {fileID: 10452048}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2513,7 +2547,7 @@ RectTransform:
   m_Children:
   - {fileID: 378808991}
   m_Father: {fileID: 10452048}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
