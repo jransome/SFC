@@ -2,7 +2,7 @@
 
 public class Engines : MonoBehaviour
 {
-    //public int MaxSpeed = 30;
+    //public int MaxSpeed = 30; // TODO Min/max speed
     public float Acceleration = 0.05f;
     public float YawRate = 15f;
     public float RollSmooth = 0.3f;
@@ -19,10 +19,38 @@ public class Engines : MonoBehaviour
     const float MinManeuverSpeedThreshold = 2f;
     private float maneuverSpeedRange = MaxManeuverSpeedThreshold - MinManeuverSpeedThreshold;
 
-    public int DesiredSpeed { get; set; }
-    public float CurrentSpeed { get; private set; }
+    private int desiredSpeed;
+    private float currentSpeed;
 
-    public void ChangeSpeed(int amount)
+    public delegate void DesiredSpeedChangedHandler(int newSpeed);
+    public delegate void CurrentSpeedChangedHandler(float newSpeed);
+
+    public event CurrentSpeedChangedHandler CurrentSpeedChanged;
+    public event DesiredSpeedChangedHandler DesiredSpeedChanged;
+
+    public int DesiredSpeed
+    {
+        get { return desiredSpeed; }
+        set
+        {
+            if (value == desiredSpeed) return;
+            desiredSpeed = value;
+            if (DesiredSpeedChanged != null) DesiredSpeedChanged(value);
+        }
+    }
+
+    public float CurrentSpeed
+    {
+        get { return currentSpeed; }
+        private set
+        {
+            if (value == currentSpeed) return;
+            currentSpeed = value;
+            if (CurrentSpeedChanged != null) CurrentSpeedChanged(value); //TODO c# 6 simplify
+        }
+    }
+
+    public void ChangeDesiredSpeed(int amount)
     {
         DesiredSpeed += amount;
     }

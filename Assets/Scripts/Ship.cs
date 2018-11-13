@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Targetable))]
-public class ShipController : MonoBehaviour
+public class Ship : MonoBehaviour
 {
     public GameObject StatusUIPrefab;
     public List<Targetable> VisibleTargets = new List<Targetable>();
@@ -44,7 +44,7 @@ public class ShipController : MonoBehaviour
 
     public void ChangeSpeed(int amount)
     {
-        Engines.ChangeSpeed(amount);
+        Engines.ChangeDesiredSpeed(amount);
     }
 
     public void CycleTargets()
