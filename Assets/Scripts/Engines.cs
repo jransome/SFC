@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Engines : MonoBehaviour
 {
@@ -22,11 +23,8 @@ public class Engines : MonoBehaviour
     private int desiredSpeed;
     private float currentSpeed;
 
-    public delegate void DesiredSpeedChangedHandler(int newSpeed);
-    public delegate void CurrentSpeedChangedHandler(float newSpeed);
-
-    public event CurrentSpeedChangedHandler CurrentSpeedChanged;
-    public event DesiredSpeedChangedHandler DesiredSpeedChanged;
+    public event Action<float> CurrentSpeedChanged = delegate { };
+    public event Action<int> DesiredSpeedChanged = delegate { };
 
     public int DesiredSpeed
     {
@@ -35,7 +33,7 @@ public class Engines : MonoBehaviour
         {
             if (value == desiredSpeed) return;
             desiredSpeed = value;
-            if (DesiredSpeedChanged != null) DesiredSpeedChanged(value);
+            DesiredSpeedChanged(value);
         }
     }
 
@@ -44,9 +42,9 @@ public class Engines : MonoBehaviour
         get { return currentSpeed; }
         private set
         {
-            if (value == currentSpeed) return;
+            if (Mathf.Approximately(value, currentSpeed)) return;
             currentSpeed = value;
-            if (CurrentSpeedChanged != null) CurrentSpeedChanged(value); //TODO c# 6 simplify
+            CurrentSpeedChanged(value);
         }
     }
 

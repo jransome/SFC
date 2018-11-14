@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
@@ -26,11 +27,8 @@ public class TacticalView : MonoBehaviour
     public static TacticalView Instance { get; private set; }
     public Ship ControlledShip { get; private set; }
 
-    public delegate void ControlChangedHandler(Ship controlledShip);
-
-    public event ControlChangedHandler ControlChanged;
-
-
+    public event Action<Ship> ControlChanged = delegate { };
+    
     private void CheckLeftMouseInput()
     {
         if (!Input.GetMouseButtonDown(0)) return;
@@ -45,7 +43,7 @@ public class TacticalView : MonoBehaviour
 
     private static Vector3? GetMapClickPoint()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // cache camera
 
         float rayDistanceTravelled;
         if (mapPlane.Raycast(ray, out rayDistanceTravelled))
