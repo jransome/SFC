@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class EnginesView : MonoBehaviour
@@ -7,7 +8,6 @@ public class EnginesView : MonoBehaviour
     public Slider Slider;
     public RectTransform SpeedIndicator;
     public RectTransform SliderRect;
-    public RectTransform HandleRect;
 
 	[Header("Engine telegraph")]
 	public Text Speedometer;
@@ -56,6 +56,21 @@ public class EnginesView : MonoBehaviour
     private void UpdateDesiredSpeedValue(int desiredSpeed)
     {
         Slider.value = desiredSpeed;
+    }
+
+    private void SetHeading()
+    {
+        //if the mouse is over a UI element (and UI exists), return TODO maybe shouldn't be here.
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem != null && eventSystem.IsPointerOverGameObject()) return;
+
+        Vector3? mapClickPoint = TacticalView.Instance.GetMapClickPoint();
+        if (mapClickPoint != null) engines.UpdateTurningOrder(mapClickPoint.GetValueOrDefault());
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0)) SetHeading();
     }
 
     private void Start()
