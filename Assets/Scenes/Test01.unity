@@ -225,8 +225,7 @@ MonoBehaviour:
   - {fileID: 176319861}
   - {fileID: 1639249342}
   EnginesView: {fileID: 365887963}
-  ShipStatusPanel: {fileID: 1517747442}
-  HardpointsView: {fileID: 0}
+  ShipStatusView: {fileID: 1517747442}
   OnBoardCamera: {fileID: 284574737}
   OwnShieldStatus: {fileID: 1319314313}
   TargetShieldStatus: {fileID: 1911424653}
@@ -671,7 +670,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9411765, g: 0.9411765, b: 0.9411765, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.6784314}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -986,7 +985,7 @@ GameObject:
   - component: {fileID: 1028035677}
   - component: {fileID: 1028035676}
   m_Layer: 5
-  m_Name: EngineSpeed
+  m_Name: EngineSpeedIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1008,7 +1007,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 80, y: 0}
-  m_SizeDelta: {x: 10, y: 7}
+  m_SizeDelta: {x: 5, y: 7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1028035676
 MonoBehaviour:
@@ -1787,7 +1786,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fdfde2762448ab47a1975f08b86785f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HardpointsView: {fileID: 0}
 --- !u!1001 &1639249341
 Prefab:
   m_ObjectHideFlags: 0

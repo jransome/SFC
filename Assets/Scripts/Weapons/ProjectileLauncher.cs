@@ -14,12 +14,10 @@ public class ProjectileLauncher : Weapon
     private Light flash;
     private Rigidbody ownRb;
 
-    public bool HasCooledDown { get; set; }
-
     public override void Fire(Targetable target)
     {
-        if (!HasCooledDown) return;
-        if (!IsInArc(target)) return;
+        target = target ? target : Target; // yea.
+        if (!CanFireOn(target)) return;
 
         Vector3 targetPosition = CalcTargetPosition(target);
         Debug.Log(targetPosition);
@@ -47,7 +45,6 @@ public class ProjectileLauncher : Weapon
     private Vector3 CalcTargetPosition(Targetable target)
     {
         if (target.Velocity == Vector3.zero || !LeadOnTarget) return target.Position;
-        Debug.Log("kdfjhglksfj");
         return FiringSolution.FirstOrderIntercept(
             transform.position, 
             ownRb.velocity, 

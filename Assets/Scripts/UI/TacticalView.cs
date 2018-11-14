@@ -7,11 +7,10 @@ public class TacticalView : MonoBehaviour
 {
     public Ship[] ControllableShips; // TODO move out to a game manager type thing
 
+    public StatusView ShipStatusView;
     public EnginesView EnginesView;
 
 
-    public StatusPanel ShipStatusPanel;
-    public HardpointsView HardpointsView;
 
     public OnBoardCamera OnBoardCamera;
     public ShieldStatus OwnShieldStatus;
@@ -64,15 +63,16 @@ public class TacticalView : MonoBehaviour
     {
         controlIndex = controlIndex == 0 ? 1 : 0;
         ChangeControlledShip(controlIndex);
-        HardpointsView = ShipStatusPanel.HardpointsView;
     }
 
     private void ChangeControlledShip(int shipId)
     {
         ControlledShip = ControllableShips[shipId];
-        Debug.Log(ControlledShip.Engines);
+
         EnginesView.ChangeControlled(ControlledShip.Engines);
-        if (ControlChanged != null) ControlChanged(ControlledShip);
+        ShipStatusView.ChangeControlled(ControlledShip);
+
+        ControlChanged(ControlledShip);
     }
 
     private void Start()
@@ -128,7 +128,7 @@ public class TacticalView : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            ControlledShip.FireSelected(HardpointsView.SelectedWeaponHardpoints);
+           ShipStatusView.FireSelected();
         }
 
         CheckLeftMouseInput();
