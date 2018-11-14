@@ -3,22 +3,26 @@ using UnityEngine;
 
 public class Engines : MonoBehaviour
 {
-    //public int MaxSpeed = 30; // TODO Min/max speed
+    [Header("Speed/Acceleration")]
+    public int MaxSpeed = 30;
+    public int MaxReverseSpeed = 5;
     public float Acceleration = 0.05f;
+
+    [Header("Yaw/Roll")]
     public float YawRate = 15f;
     public float RollSmooth = 0.3f;
     public float RollRate = 50f;
     public float MaxRollAngle = 35f;
-
-    private Rigidbody rb;
-    private float turnDirection;
-    private Vector3 targetDirection;
 
     // TODO extract to config
     const float MinTurnDelta = 0.3f;
     const float MaxManeuverSpeedThreshold = 10f; // Speed ship needs to be traveling at for highest turn speed to be applied
     const float MinManeuverSpeedThreshold = 2f;
     private float maneuverSpeedRange = MaxManeuverSpeedThreshold - MinManeuverSpeedThreshold;
+
+    private Rigidbody rb;
+    private float turnDirection;
+    private Vector3 targetDirection;
 
     private int desiredSpeed;
     private float currentSpeed;
@@ -31,6 +35,7 @@ public class Engines : MonoBehaviour
         get { return desiredSpeed; }
         set
         {
+            if (value < -MaxReverseSpeed || value > MaxSpeed) return;
             if (value == desiredSpeed) return;
             desiredSpeed = value;
             DesiredSpeedChanged(value);

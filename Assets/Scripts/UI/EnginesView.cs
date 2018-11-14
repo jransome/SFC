@@ -13,9 +13,7 @@ public class EnginesView : MonoBehaviour
 	public Text Speedometer;
 
 	private Engines engines;
-    private float minSpeed, speedRange;
-    private float zeroPosition, maxSpeedPosition;
-    private float indicatorBottom, indicatorTop;
+    private float speedRange, sliderWidth;
 
 	public void ChangeControlled(Engines newEngines)
 	{
@@ -28,6 +26,10 @@ public class EnginesView : MonoBehaviour
 		engines = newEngines;
 		engines.CurrentSpeedChanged += UpdateSpeedIndicator;
 		engines.DesiredSpeedChanged += UpdateDesiredSpeedValue;
+
+        Slider.minValue = -engines.MaxReverseSpeed;
+        Slider.maxValue = engines.MaxSpeed;
+        speedRange = engines.MaxSpeed + engines.MaxReverseSpeed;
 	}
 
     public void SetDesiredSpeed(float value)
@@ -43,17 +45,10 @@ public class EnginesView : MonoBehaviour
 
     private void UpdateSpeedIndicator(float currentSpeed)
     {
-        float currentSpeedPosition = ((currentSpeed + Mathf.Abs(minSpeed)) / speedRange) * maxSpeedPosition;
-        if (currentSpeed >= 0)
-        {
-            SpeedIndicator.offsetMin = new Vector2(zeroPosition, indicatorBottom);
-            SpeedIndicator.offsetMax = new Vector2(currentSpeedPosition, indicatorTop);
-        }
-        else
-        {
-            SpeedIndicator.offsetMin = new Vector2(currentSpeedPosition, indicatorBottom);
-            SpeedIndicator.offsetMax = new Vector2(zeroPosition, indicatorTop);
-        }
+        SpeedIndicator.anchoredPosition = new Vector2(
+            ((currentSpeed + engines.MaxReverseSpeed) / speedRange) * sliderWidth,
+            SpeedIndicator.anchoredPosition.y
+        );
 
 		Speedometer.text = "Speed: " + UIHelpers.ToOneDecimalPoint(currentSpeed);
     }
@@ -66,12 +61,6 @@ public class EnginesView : MonoBehaviour
     private void Start()
     {
 		Slider.onValueChanged.AddListener(SetDesiredSpeed);
-
-        minSpeed = Slider.minValue; // TODO: set min max values from ship engines
-        speedRange = Slider.maxValue - minSpeed;
-        maxSpeedPosition = SliderRect.rect.width;
-        zeroPosition = HandleRect.anchorMin.x * maxSpeedPosition;
-        indicatorBottom = SpeedIndicator.offsetMin.y;
-        indicatorTop = -indicatorBottom;
+        sliderWidth = SliderRect.rect.width;
     }
 }
