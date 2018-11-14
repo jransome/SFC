@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class TacticalView : MonoBehaviour
 {
@@ -27,29 +26,13 @@ public class TacticalView : MonoBehaviour
     public Ship ControlledShip { get; private set; }
 
     public event Action<Ship> ControlChanged = delegate { };
-    
-    private void CheckLeftMouseInput()
+
+    public Vector3? GetMapClickPoint()
     {
-        if (!Input.GetMouseButtonDown(0)) return;
-
-        //if the mouse is over a UI element (and UI exists), return
-        EventSystem eventSystem = EventSystem.current;
-        if (eventSystem != null && eventSystem.IsPointerOverGameObject()) return;
-
-        Vector3? mapClickPoint = GetMapClickPoint();
-        if (mapClickPoint != null) ControlledShip.Engines.UpdateTurningOrder(mapClickPoint.GetValueOrDefault());
-    }
-
-    private static Vector3? GetMapClickPoint()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // cache camera
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // TODO cache camera
 
         float rayDistanceTravelled;
-        if (mapPlane.Raycast(ray, out rayDistanceTravelled))
-        {
-            return ray.GetPoint(rayDistanceTravelled);
-        }
-
+        if (mapPlane.Raycast(ray, out rayDistanceTravelled)) return ray.GetPoint(rayDistanceTravelled);
         return null;
     }
 
@@ -130,7 +113,5 @@ public class TacticalView : MonoBehaviour
         {
            ShipStatusView.FireSelected();
         }
-
-        CheckLeftMouseInput();
     }
 }
