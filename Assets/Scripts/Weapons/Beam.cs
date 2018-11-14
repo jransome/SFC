@@ -26,19 +26,19 @@ public class Beam : Weapon
         }
     }
 
-    public bool HasCooledDown
+    public override bool HasCooledDown
     {
         get
         {
             return Time.time > (lastFireTime + DischargeTime + Cooldown);
         }
+        protected set { }
     }
 
     public override void Fire(Targetable target = null)
     {
         target = target ? target : Target; // yea.
         if (!CanFireOn(target)) return;
-        
         initialTargetDirection = Vector3.Normalize(target.transform.position - transform.position);
 
         beamRenderer.SetPosition(1, Vector3.zero);
@@ -56,10 +56,10 @@ public class Beam : Weapon
         beamRenderer.enabled = false;
     }
 
-    private bool CanFireOn(Targetable target)
-    {
-        return target && HasCooledDown && IsInArc(target);
-    }
+    //private bool CanFireOn(Targetable target)
+    //{
+    //    return target && HasCooledDown && IsInArc(target);
+    //}
 
     private List<RaycastHit> CheckForHits()
     {

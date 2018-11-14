@@ -56,30 +56,38 @@ public class Ship : MonoBehaviour
     public void SetTarget(Targetable newTarget)
     {
         Target = newTarget;
+        foreach (var weapon in weapons)
+        {
+            weapon.Target = Target;
+        }
     }
 
     public void ClearTarget()
     {
         Target = null;
-    }
-
-    public void FireSelected(IList<Hardpoint> hardpoints)
-    {
-        if (!Target) return;
-        foreach (Hardpoint h in hardpoints)
+        foreach (var weapon in weapons)
         {
-            h.Weapon.Fire(Target);
+            weapon.Target = null;
         }
     }
 
-    public void FireAny()
-    {
-        if (!Target) return;
-        foreach (Weapon weapon in weapons)
-        {
-            weapon.Fire(Target);
-        }
-    }
+    //public void FireSelected(IList<Hardpoint> hardpoints)
+    //{
+    //    if (!Target) return;
+    //    foreach (Hardpoint h in hardpoints)
+    //    {
+    //        h.Weapon.Fire(Target);
+    //    }
+    //}
+
+    //public void FireAny()
+    //{
+    //    if (!Target) return;
+    //    foreach (Weapon weapon in weapons)
+    //    {
+    //        weapon.Fire(Target);
+    //    }
+    //}
 
     private void Awake()
     {
