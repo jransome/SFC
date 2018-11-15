@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class StatusView : MonoBehaviour
@@ -22,7 +21,9 @@ public class StatusView : MonoBehaviour
         }
 
         currentStatusPrefab = Instantiate(newShip.StatusUIPrefab, transform);
-        MapViewsToControllers(currentStatusPrefab.GetComponentsInChildren<HardpointView>(), newShip.Hardpoints);
+        hardpointViews.AddRange(currentStatusPrefab.GetComponentsInChildren<HardpointView>());
+        selectedHardpointViews.AddRange(hardpointViews);
+        MapViewsToControllers(hardpointViews, newShip.Hardpoints);
     }
 
     public void FireSelected()

@@ -23,13 +23,12 @@ public class HardpointView : MonoBehaviour
 
     public void ChangeControlled(Hardpoint newHardpoint)
     {
-        Debug.Log(newHardpoint);
         hardpoint = newHardpoint;
     }
 
     public void Fire()
     {
-        hardpoint.Weapon.Fire();
+        hardpoint.Weapon.Fire(); // TODO call on hardpoint?
     }
 
     private void OnToggleClicked(bool toggled)
