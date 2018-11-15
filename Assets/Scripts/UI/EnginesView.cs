@@ -24,6 +24,8 @@ public class EnginesView : MonoBehaviour
 		}
 
 		engines = newEngines;
+        UpdateSpeedIndicator(engines.CurrentSpeed);
+        UpdateDesiredSpeedValue(engines.DesiredSpeed);
 		engines.CurrentSpeedChanged += UpdateSpeedIndicator;
 		engines.DesiredSpeedChanged += UpdateDesiredSpeedValue;
 
