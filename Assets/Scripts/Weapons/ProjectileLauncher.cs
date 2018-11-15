@@ -19,11 +19,10 @@ public class ProjectileLauncher : Weapon
         target = target ? target : Target; // yea.
         if (!CanFireOn(target)) return;
 
-        Vector3 targetPosition = CalcTargetPosition(target);
-        Debug.Log(targetPosition);
-        Debug.DrawLine(transform.position, targetPosition, Color.magenta, 5f);
+        Vector3 firingSolution = CalcFiringSolution(target);
+        Debug.DrawLine(transform.position, firingSolution, Color.magenta, 5f);
 
-        Projectile p = Instantiate(ProjectilePrefab, transform.position, Quaternion.LookRotation(targetPosition - transform.position)).GetComponent<Projectile>();
+        Projectile p = Instantiate(ProjectilePrefab, transform.position, Quaternion.LookRotation(firingSolution - transform.position)).GetComponent<Projectile>();
         p.Launch(LaunchSpeed);
 
         StartCoroutine(DischargeSequence());
@@ -42,7 +41,7 @@ public class ProjectileLauncher : Weapon
         HasCooledDown = true;
     }
 
-    private Vector3 CalcTargetPosition(Targetable target)
+    private Vector3 CalcFiringSolution(Targetable target)
     {
         if (target.Velocity == Vector3.zero || !LeadOnTarget) return target.Position;
         return FiringSolution.FirstOrderIntercept(
