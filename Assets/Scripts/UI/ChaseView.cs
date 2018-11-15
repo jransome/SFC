@@ -1,26 +1,23 @@
 ﻿using UnityEngine;
 
-public class OnBoardCamera : MonoBehaviour
+public class ChaseView : MonoBehaviour
 {
-    private Transform targetTransform;
+    private Ship followedShip;
 
-    public Transform FollowTransform { get; set; }
+    public Transform FollowTransform { get; private set; }
+    public Transform TargetTransform { get; private set; }
 
-    public Transform TargetTransform
+    public void ChangeFollowed(Ship newShip)
     {
-        get { return targetTransform; }
-        set { targetTransform = value == FollowTransform ? null : value; } // stop from being set to the same as FollowTransform
+        if (followedShip != null) followedShip.TargetChanged -= TargetChangedHandler;
+        FollowTransform = newShip.transform;
+        TargetTransform = newShip.Target == null ? null : newShip.Target.transform;
+        newShip.TargetChanged += TargetChangedHandler;
     }
 
-    private void ChangeFollowedShip(Ship ship)
+    private void TargetChangedHandler(Targetable target)
     {
-        FollowTransform = ship.transform;
-        TargetTransform = ship.Target != null ? ship.Target.transform : null;
-    }
-
-    private void Start()
-    {
-        TacticalView.Instance.ControlChanged += ChangeFollowedShip;
+        TargetTransform = target.transform;
     }
 
     private void Update()
