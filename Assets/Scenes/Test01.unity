@@ -224,9 +224,9 @@ MonoBehaviour:
   ControllableShips:
   - {fileID: 176319861}
   - {fileID: 1639249342}
-  EnginesView: {fileID: 365887963}
+  ChaseView: {fileID: 284574737}
   ShipStatusView: {fileID: 1517747442}
-  OnBoardCamera: {fileID: 284574737}
+  EnginesView: {fileID: 365887963}
   OwnShieldStatus: {fileID: 1319314313}
   TargetShieldStatus: {fileID: 1911424653}
   HullIntegrity: {fileID: 1976935211}
@@ -384,7 +384,7 @@ GameObject:
   - component: {fileID: 284574738}
   - component: {fileID: 284574737}
   m_Layer: 0
-  m_Name: CameraCradle
+  m_Name: ChaseView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -465,7 +465,6 @@ MonoBehaviour:
   Slider: {fileID: 1025183105}
   SpeedIndicator: {fileID: 1028035675}
   SliderRect: {fileID: 1149645456}
-  HandleRect: {fileID: 713540089}
   Speedometer: {fileID: 1040349186}
 --- !u!1 &378808990
 GameObject:

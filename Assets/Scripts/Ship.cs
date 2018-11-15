@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Targetable))]
@@ -12,6 +13,8 @@ public class Ship : MonoBehaviour
     private Targetable target;
     private int targetIndex = -1;
 
+    public event Action<Targetable> TargetChanged; 
+
     public List<Hardpoint> Hardpoints { get; private set; }
     public Shields Shields { get; private set; }
     public Engines Engines { get; private set; }
@@ -19,32 +22,17 @@ public class Ship : MonoBehaviour
     public Targetable Target
     {
         get { return target ? target : null; }
-        private set { target = value; }
+        private set
+        {
+            if (value == target) return;
+            target = value;
+            TargetChanged(target);
+        }
     }
 
     public float CurrentHealth
     {
         get { return self.CurrentHealth; }
-    }
-
-    public float DesiredSpeed
-    {
-        get { return Engines.DesiredSpeed; }
-    }
-
-    public float CurrentSpeed
-    {
-        get { return Engines.CurrentSpeed; }
-    }
-
-    public void SetDesiredSpeed(int value)
-    {
-        Engines.DesiredSpeed = value;
-    }
-
-    public void ChangeSpeed(int amount)
-    {
-        Engines.ChangeDesiredSpeed(amount);
     }
 
     public void CycleTargets()
@@ -70,24 +58,6 @@ public class Ship : MonoBehaviour
             weapon.Target = null;
         }
     }
-
-    //public void FireSelected(IList<Hardpoint> hardpoints)
-    //{
-    //    if (!Target) return;
-    //    foreach (Hardpoint h in hardpoints)
-    //    {
-    //        h.Weapon.Fire(Target);
-    //    }
-    //}
-
-    //public void FireAny()
-    //{
-    //    if (!Target) return;
-    //    foreach (Weapon weapon in weapons)
-    //    {
-    //        weapon.Fire(Target);
-    //    }
-    //}
 
     private void Awake()
     {

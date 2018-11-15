@@ -6,12 +6,12 @@ public class TacticalView : MonoBehaviour
 {
     public Ship[] ControllableShips; // TODO move out to a game manager type thing
 
+    public ChaseView ChaseView;
     public StatusView ShipStatusView;
     public EnginesView EnginesView;
 
 
 
-    public OnBoardCamera OnBoardCamera;
     public ShieldStatus OwnShieldStatus;
     public ShieldStatus TargetShieldStatus;
 
@@ -39,7 +39,6 @@ public class TacticalView : MonoBehaviour
     private void CycleTargets()
     {
         ControlledShip.CycleTargets();
-        OnBoardCamera.TargetTransform = ControlledShip.Target.transform; // TODO should this be here?
     }
 
     private void CycleControlledShip()
@@ -52,8 +51,9 @@ public class TacticalView : MonoBehaviour
     {
         ControlledShip = ControllableShips[shipId];
 
-        EnginesView.ChangeControlled(ControlledShip.Engines);
+        ChaseView.ChangeFollowed(ControlledShip);
         ShipStatusView.ChangeControlled(ControlledShip);
+        EnginesView.ChangeControlled(ControlledShip.Engines);
 
         ControlChanged(ControlledShip);
     }
