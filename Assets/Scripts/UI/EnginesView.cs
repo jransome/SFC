@@ -15,7 +15,7 @@ public class EnginesView : MonoBehaviour
 	private Engines engines;
     private float speedRange, sliderWidth;
 
-	public void ChangeControlled(Engines newEngines)
+	public void ChangeController(Engines newEngines)
 	{
 		if (engines != null)
 		{

@@ -10,9 +10,10 @@ public class ChaseView : MonoBehaviour
     public void ChangeFollowed(Ship newShip)
     {
         if (followedShip != null) followedShip.TargetChanged -= TargetChangedHandler;
+        followedShip = newShip;
         FollowTransform = newShip.transform;
         TargetTransform = newShip.Target == null ? null : newShip.Target.transform;
-        newShip.TargetChanged += TargetChangedHandler;
+        followedShip.TargetChanged += TargetChangedHandler;
     }
 
     private void TargetChangedHandler(Targetable target)

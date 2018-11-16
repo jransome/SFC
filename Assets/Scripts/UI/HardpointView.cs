@@ -21,7 +21,7 @@ public class HardpointView : MonoBehaviour
         }
     }
 
-    public void ChangeControlled(Hardpoint newHardpoint)
+    public void ChangeController(Hardpoint newHardpoint)
     {
         hardpoint = newHardpoint;
     }

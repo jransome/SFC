@@ -1,14 +1,19 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class StatusView : MonoBehaviour
+public class StatusView : MonoBehaviour // TODO move hardpoints stuff into a HardpointsView
 {
+    public ShieldsView shieldsView;
     private GameObject currentStatusPrefab;
     private List<HardpointView> hardpointViews = new List<HardpointView>();
     private List<HardpointView> selectedHardpointViews = new List<HardpointView>();
 
-    public void ChangeControlled(Ship newShip)
+    public void ChangeController(Ship newShip)
     {
+        // Shields stuff 
+        shieldsView.ChangeController(newShip.Shields);
+
+        // Hardpoints stuff
         if (currentStatusPrefab != null)
         {
             foreach (HardpointView view in hardpointViews)
@@ -38,7 +43,7 @@ public class StatusView : MonoBehaviour
     {
         foreach (HardpointView view in views)
         {
-            view.ChangeControlled(controllers.Find(c => c.name == view.name));
+            view.ChangeController(controllers.Find(c => c.name == view.name));
             view.HardpointViewSelectedChanged += OnHardpointViewSelectedChanged;
         }
     }

@@ -34,7 +34,7 @@ public class Targetable : MonoBehaviour, IDamageable
 
     public IList<float> ShieldCurrentHealths
     {
-        get { return shields != null ? shields.ShieldCurrentHealths : null; }
+        get { return shields != null ? shields.ShieldCurrentPercents : null; }
     }
 
     public float ApplyDamage(float amount, Vector3 attackVector)

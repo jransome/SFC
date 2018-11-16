@@ -12,8 +12,8 @@ public class TacticalView : MonoBehaviour
 
 
 
-    public ShieldStatus OwnShieldStatus;
-    public ShieldStatus TargetShieldStatus;
+    //public ShieldsView OwnShieldsView;
+    public ShieldsView TargetShieldsView;
 
     public Text HullIntegrity;
     public Text TargetHullIntegrity;
@@ -44,16 +44,16 @@ public class TacticalView : MonoBehaviour
     private void CycleControlledShip()
     {
         controlIndex = controlIndex == 0 ? 1 : 0;
-        ChangeControlledShip(controlIndex);
+        ChangeControllerShip(controlIndex);
     }
 
-    private void ChangeControlledShip(int shipId)
+    private void ChangeControllerShip(int shipId)
     {
         ControlledShip = ControllableShips[shipId];
 
         ChaseView.ChangeFollowed(ControlledShip);
-        ShipStatusView.ChangeControlled(ControlledShip);
-        EnginesView.ChangeControlled(ControlledShip.Engines);
+        ShipStatusView.ChangeController(ControlledShip);
+        EnginesView.ChangeController(ControlledShip.Engines);
 
         ControlChanged(ControlledShip);
     }
@@ -65,7 +65,7 @@ public class TacticalView : MonoBehaviour
         else if (Instance != this)
             Destroy(gameObject);
 
-        ChangeControlledShip(0);
+        ChangeControllerShip(0);
     }
 
     private void Update()
@@ -73,13 +73,13 @@ public class TacticalView : MonoBehaviour
         if (ControlledShip == null) return;
 
         HullIntegrity.text = "Hull: " + UIHelpers.ToOneDecimalPoint(ControlledShip.CurrentHealth);
-        OwnShieldStatus.UpdateStatus(ControlledShip.Shields.ShieldCurrentHealths);
+        //OwnShieldsView.UpdateStatus(ControlledShip.Shields.ShieldCurrentPercents);
 
         if (ControlledShip.Target != null)
         {
             if (ControlledShip.Target.ShieldCurrentHealths != null)
             {
-                TargetShieldStatus.UpdateStatus(ControlledShip.Target.ShieldCurrentHealths);
+                //TargetShieldsView.UpdateStatus(ControlledShip.Target.ShieldCurrentHealths);
             }
             TargetHullIntegrity.text = UIHelpers.ToOneDecimalPoint(ControlledShip.Target.CurrentHealth);
         }
