@@ -2,5 +2,5 @@ refactor ui system to use events? observable collections?
 add weapons to ui status
 make more weapon types
 make beam weapons track targets (a bit)
+refactor beam to use coroutine
 contour shields
-set min max values from ship engines

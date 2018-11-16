@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -11,22 +12,23 @@ public class Shields : MonoBehaviour, IDamageable
     private Collider shieldCollider;
     private List<Health> shieldHealths;
 
-    public IList<float> ShieldCurrentHealths
+    public event Action<int, float> ShieldDamaged;
+
+    public bool AreUp { get; private set; }
+    public List<float> ShieldCurrentPercents
     {
         get { return shieldHealths.Select(shield => shield.CurrentHealthPercent).ToList(); }
     }
 
-    public bool Up { get; private set; }
-
     public void RaiseShields()
     {
-        Up = true;
+        AreUp = true;
         shieldCollider.enabled = true;
     }
 
     public void LowerShields()
     {
-        Up = false;
+        AreUp = false;
         shieldCollider.enabled = false;
     }
 
@@ -41,35 +43,42 @@ public class Shields : MonoBehaviour, IDamageable
         if (impactHeading > -30 && impactHeading <= 30)
         {
             if(LogSuff) Debug.Log("Front");
-            return shieldHealths[0].ApplyDamage(amount);
+            return ApplyShieldDamage(0, amount);
         }
 
         if (impactHeading > -90 && impactHeading <= -30)
         {
             if(LogSuff) Debug.Log("Front-left");
-            return shieldHealths[1].ApplyDamage(amount);
+            return ApplyShieldDamage(1, amount);
         }
 
         if (impactHeading > 30 && impactHeading <= 90)
         {
             if(LogSuff) Debug.Log("Front-right");
-            return shieldHealths[2].ApplyDamage(amount);
+            return ApplyShieldDamage(2, amount);
         }
 
         if (impactHeading > -150 && impactHeading <= -90)
         {
             if(LogSuff) Debug.Log("Rear-left");
-            return shieldHealths[3].ApplyDamage(amount);
+            return ApplyShieldDamage(3, amount);
         }
 
         if (impactHeading > 90 && impactHeading <= 150)
         {
             if(LogSuff) Debug.Log("Rear-right");
-            return shieldHealths[4].ApplyDamage(amount);
+            return ApplyShieldDamage(4, amount);
         }
 
         if(LogSuff) Debug.Log("Rear");
-        return shieldHealths[5].ApplyDamage(amount);
+        return ApplyShieldDamage(5, amount);
+    }
+
+    private float ApplyShieldDamage(int shieldIndex, float amount)
+    {
+        float remainingDamage = shieldHealths[shieldIndex].ApplyDamage(amount);
+        ShieldDamaged(shieldIndex, shieldHealths[shieldIndex].CurrentHealthPercent);
+        return remainingDamage;
     }
 
     private void Start()

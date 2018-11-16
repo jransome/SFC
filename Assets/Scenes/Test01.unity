@@ -227,8 +227,7 @@ MonoBehaviour:
   ChaseView: {fileID: 284574737}
   ShipStatusView: {fileID: 1517747442}
   EnginesView: {fileID: 365887963}
-  OwnShieldStatus: {fileID: 1319314313}
-  TargetShieldStatus: {fileID: 1911424653}
+  TargetShieldsView: {fileID: 1911424653}
   HullIntegrity: {fileID: 1976935211}
   TargetHullIntegrity: {fileID: 1138061897}
 --- !u!1 &166466624
@@ -1380,7 +1379,7 @@ GameObject:
   - component: {fileID: 1319314312}
   - component: {fileID: 1319314313}
   m_Layer: 5
-  m_Name: ShieldStatus
+  m_Name: ShieldsView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1421,7 +1420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f1f4186d65e744895576f8f76f8760, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShieldStatuses:
+  ShieldViews:
   - {fileID: 1990569423}
   - {fileID: 923451680}
   - {fileID: 2128726420}
@@ -1785,6 +1784,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fdfde2762448ab47a1975f08b86785f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shieldsView: {fileID: 1319314313}
 --- !u!1001 &1639249341
 Prefab:
   m_ObjectHideFlags: 0
@@ -1955,7 +1955,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f1f4186d65e744895576f8f76f8760, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShieldStatuses:
+  ShieldViews:
   - {fileID: 1428651481}
   - {fileID: 1420522144}
   - {fileID: 1933150586}
