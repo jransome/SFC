@@ -11,6 +11,11 @@ public class HardpointView : MonoBehaviour
 
     public event Action<HardpointView, bool> HardpointViewSelectedChanged = delegate { };
 
+    public bool IsInteractable
+    {
+        set { toggle.interactable = value; }
+    }
+
     public bool IsSelected
     {
         get { return isSelected; }

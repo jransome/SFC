@@ -12,7 +12,7 @@ public class Shields : MonoBehaviour, IDamageable
     private Collider shieldCollider;
     private List<Health> shieldHealths;
 
-    public event Action<int, float> ShieldDamaged;
+    public event Action<int, float> ShieldDamaged = delegate { };
 
     public bool AreUp { get; private set; }
     public List<float> ShieldCurrentPercents

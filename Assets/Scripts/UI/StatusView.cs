@@ -3,10 +3,17 @@ using UnityEngine;
 
 public class StatusView : MonoBehaviour // TODO move hardpoints stuff into a HardpointsView
 {
+    public bool IsInteractable = false;
     public ShieldsView shieldsView;
+
     private GameObject currentStatusPrefab;
     private List<HardpointView> hardpointViews = new List<HardpointView>();
     private List<HardpointView> selectedHardpointViews = new List<HardpointView>();
+
+    public List<HardpointView> SelectedHardpointViews
+    {
+        get { return selectedHardpointViews; }
+    }
 
     public void ChangeController(Ship newShip)
     {
@@ -31,20 +38,16 @@ public class StatusView : MonoBehaviour // TODO move hardpoints stuff into a Har
         MapViewsToControllers(hardpointViews, newShip.Hardpoints);
     }
 
-    public void FireSelected()
-    {
-        foreach (HardpointView view in selectedHardpointViews)
-        {
-            view.Fire();
-        }
-    }
-
     private void MapViewsToControllers(IEnumerable<HardpointView> views, List<Hardpoint> controllers)
     {
         foreach (HardpointView view in views)
         {
             view.ChangeController(controllers.Find(c => c.name == view.name));
-            view.HardpointViewSelectedChanged += OnHardpointViewSelectedChanged;
+            view.IsInteractable = IsInteractable;
+            if (IsInteractable)
+            {
+                view.HardpointViewSelectedChanged += OnHardpointViewSelectedChanged;
+            }
         }
     }
 

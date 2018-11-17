@@ -8,24 +8,18 @@ public class TacticalView : MonoBehaviour
 
     public ChaseView ChaseView;
     public StatusView ShipStatusView;
+    public StatusView TargetStatusView;
+    public WeaponsView WeaponsView;
     public EnginesView EnginesView;
-
-
-
-    //public ShieldsView OwnShieldsView;
-    public ShieldsView TargetShieldsView;
 
     public Text HullIntegrity;
     public Text TargetHullIntegrity;
-
 
     private int controlIndex = 0;
     private static Plane mapPlane = new Plane(Vector3.up, Vector3.zero);
 
     public static TacticalView Instance { get; private set; }
     public Ship ControlledShip { get; private set; }
-
-    public event Action<Ship> ControlChanged = delegate { };
 
     public Vector3? GetMapClickPoint()
     {
@@ -39,6 +33,7 @@ public class TacticalView : MonoBehaviour
     private void CycleTargets()
     {
         ControlledShip.CycleTargets();
+        TargetStatusView.ChangeController(ControlledShip.Target.Ship);
     }
 
     private void CycleControlledShip()
@@ -53,9 +48,8 @@ public class TacticalView : MonoBehaviour
 
         ChaseView.ChangeFollowed(ControlledShip);
         ShipStatusView.ChangeController(ControlledShip);
+        if (ControlledShip.Target) TargetStatusView.ChangeController(ControlledShip.Target.Ship);
         EnginesView.ChangeController(ControlledShip.Engines);
-
-        ControlChanged(ControlledShip);
     }
 
     private void Start()
@@ -73,14 +67,9 @@ public class TacticalView : MonoBehaviour
         if (ControlledShip == null) return;
 
         HullIntegrity.text = "Hull: " + UIHelpers.ToOneDecimalPoint(ControlledShip.CurrentHealth);
-        //OwnShieldsView.UpdateStatus(ControlledShip.Shields.ShieldCurrentPercents);
 
         if (ControlledShip.Target != null)
         {
-            if (ControlledShip.Target.ShieldCurrentHealths != null)
-            {
-                //TargetShieldsView.UpdateStatus(ControlledShip.Target.ShieldCurrentHealths);
-            }
             TargetHullIntegrity.text = UIHelpers.ToOneDecimalPoint(ControlledShip.Target.CurrentHealth);
         }
 
@@ -111,7 +100,7 @@ public class TacticalView : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-           ShipStatusView.FireSelected();
+           WeaponsView.FireSelected();
         }
     }
 }
