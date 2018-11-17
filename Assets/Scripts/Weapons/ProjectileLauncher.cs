@@ -26,12 +26,15 @@ public class ProjectileLauncher : MountedWeapon
 
     private IEnumerator DischargeSequence()
     {
+        IsDischarging = true;
         HasCooledDown = false;
         sfx.Play();
         flash.enabled = true;
 
         yield return new WaitForSeconds(DischargeTime);
+        IsDischarging = false;
         flash.enabled = false;
+        dischargeFinishTime = Time.time;
 
         yield return new WaitForSeconds(CooldownTime);
         HasCooledDown = true;
