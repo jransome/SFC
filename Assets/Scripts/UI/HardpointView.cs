@@ -7,6 +7,7 @@ public class HardpointView : MonoBehaviour
 {
     private Hardpoint hardpoint;
     private Toggle toggle;
+    private Text chargeStatus;
     private bool isSelected;
 
     public event Action<HardpointView, bool> HardpointViewSelectedChanged = delegate { };
@@ -41,8 +42,14 @@ public class HardpointView : MonoBehaviour
         IsSelected = toggled;
     }
 
+    void Update() // TODO get rid of this 
+    {
+        chargeStatus.text = hardpoint.MountedWeapon.ChargePercent.ToString();
+    }
+
     private void Awake()
     {
+        chargeStatus = GetComponentInChildren<Text>();
         toggle = GetComponent<Toggle>();
         IsSelected = toggle.isOn;
         toggle.onValueChanged.AddListener(OnToggleClicked);

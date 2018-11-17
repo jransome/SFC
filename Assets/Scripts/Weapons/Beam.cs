@@ -17,8 +17,6 @@ public class Beam : MountedWeapon
     private float distanceCovered = 0f;
     private float damagePerStep;
 
-    public bool IsDischarging { get; private set; }
-
     public override void Fire(Targetable target = null)
     {
         target = target ? target : Target; // yea.
@@ -32,6 +30,7 @@ public class Beam : MountedWeapon
     public void CeaseFire()
     {
         IsDischarging = false;
+        dischargeFinishTime = Time.time;
         distanceCovered = 0f;
         beamRenderer.SetPosition(1, Vector3.zero);
         flash.enabled = false;

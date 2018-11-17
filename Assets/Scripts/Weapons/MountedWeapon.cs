@@ -4,15 +4,27 @@ public abstract class MountedWeapon : MonoBehaviour
 {
     public float CooldownTime = 1f;
     public float DischargeTime = 1f;
+
+    protected AudioSource sfx;
+    protected Light flash;
+    protected float dischargeFinishTime;
+    private int chargePercent;
     
     public GameObject Self { protected get; set; }
     public Targetable Target { get; set; }
     public WeaponArc Arc { get; set; }
     public virtual bool HasCooledDown { get; protected set; }
-    public virtual int ChargePercent { get; protected set; }
+    public bool IsDischarging { get; protected set; }
 
-    protected AudioSource sfx;
-    protected Light flash;
+    public int ChargePercent // TODO implement charging/energy consumption
+    {
+        get
+        {
+            if (IsDischarging) return 0;
+            if (HasCooledDown) return 100;
+            return Mathf.RoundToInt((Time.time - dischargeFinishTime) / CooldownTime * 100);
+        }
+    }
 
     public abstract void Fire(Targetable target = null);
 
