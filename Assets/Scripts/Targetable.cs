@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Ship))]
 public class Targetable : MonoBehaviour, IDamageable
 {
     public float StartingHitPoints = 10f;
@@ -8,9 +9,15 @@ public class Targetable : MonoBehaviour, IDamageable
 
     private Transform t;
     private Rigidbody rb;
+    private Ship ship;
     private Health health;
     private Shields shields;
     private Engines engines;
+
+    public Ship Ship
+    {
+        get { return ship; }
+    }
 
     public Vector3 Position
     {
@@ -46,6 +53,7 @@ public class Targetable : MonoBehaviour, IDamageable
     {
         t = transform;
         rb = GetComponent<Rigidbody>();
+        ship = GetComponent<Ship>();
         health = new Health(StartingHitPoints);
         shields = GetComponentInChildren<Shields>();
         engines = GetComponent<Engines>();
