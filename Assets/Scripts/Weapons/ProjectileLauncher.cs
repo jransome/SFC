@@ -1,17 +1,13 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class ProjectileLauncher : Weapon
+public class ProjectileLauncher : MountedWeapon
 {
     public GameObject ProjectilePrefab;
-    public float CooldownTime = 1f;
-    public float DischargeTime = 0.1f;
     public float Range = 500f;
     public float LaunchSpeed = 50f;
     public bool LeadOnTarget = false;
 
-    private AudioSource sfx;
-    private Light flash;
     private Rigidbody ownRb;
 
     public override void Fire(Targetable target)
@@ -52,11 +48,9 @@ public class ProjectileLauncher : Weapon
             target.Velocity);
     }
 
-    private void Start()
+    protected override void Start()
     {
-        HasCooledDown = true;
-        sfx = GetComponent<AudioSource>();
-        flash = GetComponent<Light>();
+        base.Start();
         ownRb = GetComponentInParent<Rigidbody>();
     }
 }

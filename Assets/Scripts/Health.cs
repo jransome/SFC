@@ -42,6 +42,5 @@ public class Health
     public void Die()
     {
         IsDead = true;
-        Debug.Log("destroyed!");
     }
 }

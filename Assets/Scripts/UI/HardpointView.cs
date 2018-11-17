@@ -33,7 +33,7 @@ public class HardpointView : MonoBehaviour
 
     public void Fire()
     {
-        hardpoint.Weapon.Fire(); // TODO call on hardpoint?
+        hardpoint.MountedWeapon.Fire(); // TODO call on hardpoint?
     }
 
     private void OnToggleClicked(bool toggled)

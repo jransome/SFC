@@ -1,11 +1,18 @@
 ﻿using UnityEngine;
 
-public abstract class Weapon : MonoBehaviour
+public abstract class MountedWeapon : MonoBehaviour
 {
+    public float CooldownTime = 1f;
+    public float DischargeTime = 1f;
+    
     public GameObject Self { protected get; set; }
     public Targetable Target { get; set; }
     public WeaponArc Arc { get; set; }
     public virtual bool HasCooledDown { get; protected set; }
+    public virtual int ChargePercent { get; protected set; }
+
+    protected AudioSource sfx;
+    protected Light flash;
 
     public abstract void Fire(Targetable target = null);
 
@@ -22,5 +29,12 @@ public abstract class Weapon : MonoBehaviour
     protected bool CanFireOn(Targetable target)
     {
         return target && HasCooledDown && IsInArc(target);
+    }
+
+    protected virtual void Start()
+    {
+        HasCooledDown = true;
+        sfx = GetComponent<AudioSource>();
+        flash = GetComponent<Light>();
     }
 }
