@@ -6,13 +6,13 @@ public class Hardpoint : MonoBehaviour
     public float ArcCentre, ArcRange; // TODO: should this be a WeaponArc?
 
     public GameObject Device { get; private set; }
-    public Weapon Weapon { get; private set; } //TODO not all devices will be weapons
+    public MountedWeapon MountedWeapon { get; private set; } //TODO not all devices will be mountedWeapons
 
     private void Awake()
     {
         Device = Instantiate(DevicePrefab, transform.position, Quaternion.AngleAxis(ArcCentre, Vector3.up), transform);
-        Weapon = Device.GetComponent<Weapon>();
-        Weapon.SetArc(ArcCentre, ArcRange, transform.parent);
-        Weapon.Self = transform.parent.parent.gameObject;
+        MountedWeapon = Device.GetComponent<MountedWeapon>();
+        MountedWeapon.SetArc(ArcCentre, ArcRange, transform.parent);
+        MountedWeapon.Self = transform.parent.parent.gameObject;
     }
 }

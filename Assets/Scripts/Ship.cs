@@ -8,7 +8,7 @@ public class Ship : MonoBehaviour
     public GameObject StatusUIPrefab;
     public List<Targetable> VisibleTargets = new List<Targetable>();
 
-    private Weapon[] weapons;
+    private MountedWeapon[] mountedWeapons;
     private Targetable self;
     private Targetable target;
     private int targetIndex = -1;
@@ -44,7 +44,7 @@ public class Ship : MonoBehaviour
     public void SetTarget(Targetable newTarget)
     {
         Target = newTarget;
-        foreach (var weapon in weapons)
+        foreach (var weapon in mountedWeapons)
         {
             weapon.Target = Target;
         }
@@ -53,7 +53,7 @@ public class Ship : MonoBehaviour
     public void ClearTarget()
     {
         Target = null;
-        foreach (var weapon in weapons)
+        foreach (var weapon in mountedWeapons)
         {
             weapon.Target = null;
         }
@@ -65,6 +65,6 @@ public class Ship : MonoBehaviour
         Hardpoints = new List<Hardpoint>(GetComponentsInChildren<Hardpoint>());
         Shields = GetComponentInChildren<Shields>();
         Engines = GetComponent<Engines>();
-        weapons = GetComponentsInChildren<Weapon>();
+        mountedWeapons = GetComponentsInChildren<MountedWeapon>();
     }
 }
