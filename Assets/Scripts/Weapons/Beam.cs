@@ -32,7 +32,6 @@ public class Beam : MountedWeapon
         IsDischarging = false;
         dischargeFinishTime = Time.time;
         distanceCovered = 0f;
-        beamRenderer.SetPosition(1, Vector3.zero);
         flash.enabled = false;
         beamRenderer.enabled = false;
     }
@@ -44,8 +43,6 @@ public class Beam : MountedWeapon
 
         sfx.Play();
         flash.enabled = true;
-        beamRenderer.SetPosition(1, Vector3.zero);
-        beamRenderer.enabled = true;
 
         float elapsedDischargeTime = 0f;
 
@@ -79,8 +76,6 @@ public class Beam : MountedWeapon
                 }
             }
 
-            beamRenderer.SetPosition(1, transform.InverseTransformDirection(initialTargetDirection) * distanceCovered);
-
             yield return new WaitForSeconds(DischargeStepTime);
             elapsedDischargeTime += DischargeStepTime;
 
@@ -96,6 +91,16 @@ public class Beam : MountedWeapon
         List<RaycastHit> unsorted = new List<RaycastHit>(Physics.RaycastAll(transform.position, initialTargetDirection, distanceCovered));
         unsorted.RemoveAll(hit => hit.collider.gameObject == Self);
         return unsorted.OrderBy(hit => hit.distance).ToList();
+    }
+    
+    private void Update()
+    {
+        if (IsDischarging)
+        {
+            beamRenderer.enabled = true;
+            beamRenderer.SetPosition(0, Vector3.zero);
+            beamRenderer.SetPosition(1, transform.InverseTransformDirection(initialTargetDirection) * distanceCovered);
+        }
     }
 
     protected override void Start()
