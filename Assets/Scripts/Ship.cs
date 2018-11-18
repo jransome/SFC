@@ -11,14 +11,12 @@ public class Ship : MonoBehaviour
     private MountedWeapon[] mountedWeapons;
     private Targetable self;
     private Targetable target;
-    private int targetIndex = -1;
 
-    public event Action<Targetable> TargetChanged; 
+    public event Action<Targetable> TargetChanged = delegate { }; 
 
     public List<Hardpoint> Hardpoints { get; private set; }
     public Shields Shields { get; private set; }
     public Engines Engines { get; private set; }
-
     public Targetable Target
     {
         get { return target ? target : null; }
@@ -27,6 +25,22 @@ public class Ship : MonoBehaviour
             if (value == target) return;
             target = value;
             TargetChanged(target);
+        }
+    }
+    public float? TargetHeading
+    {
+        get
+        {
+            if (target == null) return null;
+            return Helpers.CalculateHorizonHeading(transform.forward, target.Position - transform.position);
+        }
+    }
+    public float? TargetRelativeHeading // Returns the heading of this ship from the target's perspective
+    {
+        get
+        {
+            if (target == null) return null;
+            return target.CalcRelativeHeading(transform.position);
         }
     }
 
@@ -39,18 +53,17 @@ public class Ship : MonoBehaviour
     {
         Target = newTarget;
         foreach (var weapon in mountedWeapons)
-        {
             weapon.Target = Target;
-        }
     }
 
     public void ClearTarget()
     {
-        Target = null;
-        foreach (var weapon in mountedWeapons)
-        {
-            weapon.Target = null;
-        }
+        SetTarget(null);
+    }
+
+    private void Update()
+    {
+
     }
 
     private void Awake()

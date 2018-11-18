@@ -13,6 +13,8 @@ public class TacticalView : MonoBehaviour
 
     public Text HullIntegrity; // TODO move to status view
     public Text TargetHullIntegrity; // TODO move to status view
+    public Text tHeading;
+    public Text relHeading;
 
     private Ship controlledShip;
     private int controlIndex = 0;
@@ -73,6 +75,8 @@ public class TacticalView : MonoBehaviour
         if (controlledShip.Target != null)
         {
             TargetHullIntegrity.text = UIHelpers.ToOneDecimalPoint(controlledShip.Target.CurrentHealth);
+            tHeading.text = controlledShip.TargetHeading.ToString();
+            relHeading.text = controlledShip.TargetRelativeHeading.ToString();
         }
 
         if (Input.GetKeyDown(KeyCode.C))

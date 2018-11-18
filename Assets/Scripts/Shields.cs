@@ -34,11 +34,7 @@ public class Shields : MonoBehaviour, IDamageable
 
     public float ApplyDamage(float amount, Vector3 attackVector)
     {
-        Vector3 shipFwd = transform.forward;
-        float impactHeading = Vector3.SignedAngle(
-            new Vector3(shipFwd.x, 0, shipFwd.z), 
-            new Vector3(-attackVector.x, 0, -attackVector.z), 
-            Vector3.up); // Axis is ignored, known Unity issue
+        float impactHeading = Helpers.CalculateHorizonHeading(transform.forward, -attackVector);
 
         if (impactHeading > -30 && impactHeading <= 30)
         {

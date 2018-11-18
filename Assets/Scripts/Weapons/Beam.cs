@@ -13,7 +13,6 @@ public class Beam : MountedWeapon
 
     private LineRenderer beamRenderer;
     private Vector3 initialTargetDirection;
-    private float lastFireTime = -1000f;
     private float distanceCovered = 0f;
     private float damagePerStep;
 
@@ -23,7 +22,6 @@ public class Beam : MountedWeapon
         if (!CanFireOn(target)) return;
 
         initialTargetDirection = Vector3.Normalize(target.transform.position - transform.position);
-        lastFireTime = Time.time;
         StartCoroutine(DischargeSequence());
     }
 

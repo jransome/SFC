@@ -49,6 +49,11 @@ public class Targetable : MonoBehaviour, IDamageable
         return health.ApplyDamage(amount);
     }
 
+    public float CalcRelativeHeading(Vector3 position)
+    {
+        return Helpers.CalculateHorizonHeading(transform.forward, position - transform.position);
+    }
+
     private void Start()
     {
         t = transform;

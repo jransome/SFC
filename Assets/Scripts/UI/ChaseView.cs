@@ -18,7 +18,7 @@ public class ChaseView : MonoBehaviour
 
     private void TargetChangedHandler(Targetable target)
     {
-        TargetTransform = target.transform;
+        TargetTransform = target == null ? null : target.transform;
     }
 
     private void Update()
