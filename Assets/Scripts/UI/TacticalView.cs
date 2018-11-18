@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class TacticalView : MonoBehaviour
@@ -12,14 +11,15 @@ public class TacticalView : MonoBehaviour
     public WeaponsView WeaponsView;
     public EnginesView EnginesView;
 
-    public Text HullIntegrity;
-    public Text TargetHullIntegrity;
+    public Text HullIntegrity; // TODO move to status view
+    public Text TargetHullIntegrity; // TODO move to status view
 
+    private Ship controlledShip;
     private int controlIndex = 0;
-    private static Plane mapPlane = new Plane(Vector3.up, Vector3.zero);
+    private int targetIndex = 0;
+    private Plane mapPlane = new Plane(Vector3.up, Vector3.zero);
 
     public static TacticalView Instance { get; private set; }
-    public Ship ControlledShip { get; private set; }
 
     public Vector3? GetMapClickPoint()
     {
@@ -32,24 +32,26 @@ public class TacticalView : MonoBehaviour
 
     private void CycleTargets()
     {
-        ControlledShip.CycleTargets();
-        TargetStatusView.ChangeController(ControlledShip.Target.Ship);
+        targetIndex++;
+        if (targetIndex > controlledShip.VisibleTargets.Count - 1) targetIndex = 0;
+        controlledShip.SetTarget(controlledShip.VisibleTargets[targetIndex]);
+        TargetStatusView.ChangeController(controlledShip.Target.Ship);
     }
 
     private void CycleControlledShip()
     {
         controlIndex = controlIndex == 0 ? 1 : 0;
-        ChangeControllerShip(controlIndex);
+        ChangeShipController(controlIndex);
     }
 
-    private void ChangeControllerShip(int shipId)
+    private void ChangeShipController(int shipId)
     {
-        ControlledShip = ControllableShips[shipId];
+        controlledShip = ControllableShips[shipId];
 
-        ChaseView.ChangeFollowed(ControlledShip);
-        ShipStatusView.ChangeController(ControlledShip);
-        if (ControlledShip.Target) TargetStatusView.ChangeController(ControlledShip.Target.Ship);
-        EnginesView.ChangeController(ControlledShip.Engines);
+        ChaseView.ChangeFollowed(controlledShip);
+        ShipStatusView.ChangeController(controlledShip);
+        if (controlledShip.Target) TargetStatusView.ChangeController(controlledShip.Target.Ship);
+        EnginesView.ChangeController(controlledShip.Engines);
     }
 
     private void Start()
@@ -59,18 +61,18 @@ public class TacticalView : MonoBehaviour
         else if (Instance != this)
             Destroy(gameObject);
 
-        ChangeControllerShip(0);
+        ChangeShipController(0);
     }
 
     private void Update()
     {
-        if (ControlledShip == null) return;
+        if (controlledShip == null) return;
 
-        HullIntegrity.text = "Hull: " + UIHelpers.ToOneDecimalPoint(ControlledShip.CurrentHealth);
+        HullIntegrity.text = "Hull: " + UIHelpers.ToOneDecimalPoint(controlledShip.CurrentHealth);
 
-        if (ControlledShip.Target != null)
+        if (controlledShip.Target != null)
         {
-            TargetHullIntegrity.text = UIHelpers.ToOneDecimalPoint(ControlledShip.Target.CurrentHealth);
+            TargetHullIntegrity.text = UIHelpers.ToOneDecimalPoint(controlledShip.Target.CurrentHealth);
         }
 
         if (Input.GetKeyDown(KeyCode.C))
@@ -95,7 +97,7 @@ public class TacticalView : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Backslash))
         {
-            ControlledShip.ClearTarget();
+            controlledShip.ClearTarget();
         }
 
         if (Input.GetKeyDown(KeyCode.Z))

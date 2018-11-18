@@ -35,12 +35,6 @@ public class Ship : MonoBehaviour
         get { return self.CurrentHealth; }
     }
 
-    public void CycleTargets()
-    {
-        targetIndex = targetIndex >= VisibleTargets.Count - 1 ? 0 : targetIndex + 1;
-        SetTarget(VisibleTargets[targetIndex]);
-    }
-
     public void SetTarget(Targetable newTarget)
     {
         Target = newTarget;
