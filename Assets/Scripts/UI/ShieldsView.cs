@@ -19,8 +19,8 @@ public class ShieldsView : MonoBehaviour
         }
     }
 
-    private void UpdateShieldView(int shieldIndex, float newHealthPercent)
+    private void UpdateShieldView(Facing shieldFacing, float newHealthPercent)
     {
-        ShieldViews[shieldIndex].text = UIHelpers.ToOneDecimalPoint(newHealthPercent);
+        ShieldViews[shieldFacing.Index].text = UIHelpers.ToOneDecimalPoint(newHealthPercent);
     }
 }

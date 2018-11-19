@@ -6,18 +6,17 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Shields : MonoBehaviour, IDamageable
 {
-    public bool LogSuff = false; // for debug
     public float[] ShieldRatings = {10f, 10f, 10f, 10f}; // Bow, Bow flanks, Stern flanks, Stern
 
     private Collider shieldCollider;
-    private List<Health> shieldHealths;
+    private Dictionary<Facing, Health> shieldHealths;
 
-    public event Action<int, float> ShieldDamaged = delegate { };
+    public event Action<Facing, float> ShieldDamaged = delegate { };
 
     public bool AreUp { get; private set; }
     public List<float> ShieldCurrentPercents
     {
-        get { return shieldHealths.Select(shield => shield.CurrentHealthPercent).ToList(); }
+        get { return shieldHealths.Values.Select(shield => shield.CurrentHealthPercent).ToList(); }
     }
 
     public void RaiseShields()
@@ -35,59 +34,24 @@ public class Shields : MonoBehaviour, IDamageable
     public float ApplyDamage(float amount, Vector3 attackVector)
     {
         float impactHeading = Helpers.CalculateHorizonHeading(transform.forward, -attackVector);
+        Facing facing = Facing.GetFacingByHeading(impactHeading);
+        float remainingDamage = shieldHealths[facing].ApplyDamage(amount);
 
-        if (impactHeading > -30 && impactHeading <= 30)
-        {
-            if(LogSuff) Debug.Log("Front");
-            return ApplyShieldDamage(0, amount);
-        }
-
-        if (impactHeading > -90 && impactHeading <= -30)
-        {
-            if(LogSuff) Debug.Log("Front-left");
-            return ApplyShieldDamage(1, amount);
-        }
-
-        if (impactHeading > 30 && impactHeading <= 90)
-        {
-            if(LogSuff) Debug.Log("Front-right");
-            return ApplyShieldDamage(2, amount);
-        }
-
-        if (impactHeading > -150 && impactHeading <= -90)
-        {
-            if(LogSuff) Debug.Log("Rear-left");
-            return ApplyShieldDamage(3, amount);
-        }
-
-        if (impactHeading > 90 && impactHeading <= 150)
-        {
-            if(LogSuff) Debug.Log("Rear-right");
-            return ApplyShieldDamage(4, amount);
-        }
-
-        if(LogSuff) Debug.Log("Rear");
-        return ApplyShieldDamage(5, amount);
-    }
-
-    private float ApplyShieldDamage(int shieldIndex, float amount)
-    {
-        float remainingDamage = shieldHealths[shieldIndex].ApplyDamage(amount);
-        ShieldDamaged(shieldIndex, shieldHealths[shieldIndex].CurrentHealthPercent);
+        ShieldDamaged(facing, shieldHealths[facing].CurrentHealthPercent);
         return remainingDamage;
     }
 
     private void Start()
     {
         shieldCollider = GetComponent<Collider>();
-        shieldHealths = new List<Health>()
+        shieldHealths = new Dictionary<Facing, Health>()
         {
-            new Health(ShieldRatings[0]),
-            new Health(ShieldRatings[1]),
-            new Health(ShieldRatings[1]),
-            new Health(ShieldRatings[2]),
-            new Health(ShieldRatings[2]),
-            new Health(ShieldRatings[3])
+            { Facing.Bow,               new Health(ShieldRatings[0]) }, 
+            { Facing.PortBow,           new Health(ShieldRatings[1]) },
+            { Facing.StarboardBow,      new Health(ShieldRatings[1]) },
+            { Facing.PortStern,         new Health(ShieldRatings[2]) },
+            { Facing.StarboardStern,    new Health(ShieldRatings[2]) },
+            { Facing.Stern,             new Health(ShieldRatings[3]) },
         };
         RaiseShields();
     }

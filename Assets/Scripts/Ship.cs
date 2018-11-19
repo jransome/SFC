@@ -35,13 +35,11 @@ public class Ship : MonoBehaviour
             return Helpers.CalculateHorizonHeading(transform.forward, target.Position - transform.position);
         }
     }
-    public float? TargetRelativeHeading // Returns the heading of this ship from the target's perspective
+
+    public float? TargetRelativeHeading() // Returns the heading of this ship from the target's perspective
     {
-        get
-        {
-            if (target == null) return null;
-            return target.CalcRelativeHeading(transform.position);
-        }
+        if (target == null) return null;
+        return target.CalcRelativeHeading(transform.position);
     }
 
     public float CurrentHealth
@@ -59,11 +57,6 @@ public class Ship : MonoBehaviour
     public void ClearTarget()
     {
         SetTarget(null);
-    }
-
-    private void Update()
-    {
-
     }
 
     private void Awake()

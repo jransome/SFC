@@ -76,7 +76,7 @@ public class TacticalView : MonoBehaviour
         {
             TargetHullIntegrity.text = UIHelpers.ToOneDecimalPoint(controlledShip.Target.CurrentHealth);
             tHeading.text = controlledShip.TargetHeading.ToString();
-            relHeading.text = controlledShip.TargetRelativeHeading.ToString();
+            relHeading.text = controlledShip.TargetRelativeHeading().ToString();
         }
 
         if (Input.GetKeyDown(KeyCode.C))
