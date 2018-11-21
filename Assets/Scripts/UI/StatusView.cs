@@ -3,24 +3,27 @@ using UnityEngine;
 
 public class StatusView : MonoBehaviour // TODO move hardpoints stuff into a HardpointsView
 {
-    public bool IsInteractable = false;
+    public bool IsOwnShipStatus = true;
     public ShieldsView shieldsView;
+    public FacingView facingView;
 
     private GameObject currentStatusPrefab;
     private List<HardpointView> hardpointViews = new List<HardpointView>();
-    private List<HardpointView> selectedHardpointViews = new List<HardpointView>();
 
-    public List<HardpointView> SelectedHardpointViews
-    {
-        get { return selectedHardpointViews; }
-    }
+    public List<HardpointView> SelectedHardpointViews { get; } = new List<HardpointView>();
 
     public void ChangeController(Ship newShip)
     {
-        // Shields stuff 
+        // Facing view
+        if (IsOwnShipStatus)
+            facingView.ChangeModel(newShip.TargetingSystem.TargetFacing);
+        else
+            shipController.TargetingSystem.TargetRelativeFacingChanged += facingView.UpdateFacing;
+
+        // Shields view 
         shieldsView.ChangeController(newShip.Shields);
 
-        // Hardpoints stuff
+        // Hardpoint views
         if (currentStatusPrefab != null)
         {
             foreach (HardpointView view in hardpointViews)
@@ -28,13 +31,13 @@ public class StatusView : MonoBehaviour // TODO move hardpoints stuff into a Har
                 view.HardpointViewSelectedChanged -= OnHardpointViewSelectedChanged; // TODO is this necessary?
             }
             hardpointViews.Clear();
-            selectedHardpointViews.Clear();
+            SelectedHardpointViews.Clear();
             Destroy(currentStatusPrefab);
         }
 
         currentStatusPrefab = Instantiate(newShip.StatusUIPrefab, transform);
         hardpointViews.AddRange(currentStatusPrefab.GetComponentsInChildren<HardpointView>());
-        selectedHardpointViews.AddRange(hardpointViews);
+        SelectedHardpointViews.AddRange(hardpointViews);
         MapViewsToControllers(hardpointViews, newShip.Hardpoints);
     }
 
@@ -43,8 +46,8 @@ public class StatusView : MonoBehaviour // TODO move hardpoints stuff into a Har
         foreach (HardpointView view in views)
         {
             view.ChangeController(controllers.Find(c => c.name == view.name));
-            view.IsInteractable = IsInteractable;
-            if (IsInteractable)
+            view.IsInteractable = IsOwnShipStatus;
+            if (IsOwnShipStatus)
             {
                 view.HardpointViewSelectedChanged += OnHardpointViewSelectedChanged;
             }
@@ -54,8 +57,8 @@ public class StatusView : MonoBehaviour // TODO move hardpoints stuff into a Har
     private void OnHardpointViewSelectedChanged(HardpointView view, bool isSelected)
     {
         if (isSelected)
-            selectedHardpointViews.Add(view);
+            SelectedHardpointViews.Add(view);
         else
-            selectedHardpointViews.Remove(view);
+            SelectedHardpointViews.Remove(view);
     }
 }

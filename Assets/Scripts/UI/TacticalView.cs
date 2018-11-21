@@ -16,9 +16,10 @@ public class TacticalView : MonoBehaviour
     public Text tHeading;
     public Text relHeading;
 
-    private Ship controlledShip;
     private int controlIndex = 0;
     private int targetIndex = 0;
+    private Ship controlledShip;
+    private TargetingSystem controlledTargetingSystem;
     private Plane mapPlane = new Plane(Vector3.up, Vector3.zero);
 
     public static TacticalView Instance { get; private set; }
@@ -35,24 +36,26 @@ public class TacticalView : MonoBehaviour
     private void CycleTargets()
     {
         targetIndex++;
-        if (targetIndex > controlledShip.VisibleTargets.Count - 1) targetIndex = 0;
-        controlledShip.SetTarget(controlledShip.VisibleTargets[targetIndex]);
-        TargetStatusView.ChangeController(controlledShip.Target.Ship);
+        if (targetIndex > controlledTargetingSystem.VisibleTargets.Count - 1) targetIndex = 0;
+        controlledTargetingSystem.SetTarget(controlledTargetingSystem.VisibleTargets[targetIndex]);
+        TargetStatusView.ChangeController(controlledTargetingSystem.Target.Ship);
     }
 
     private void CycleControlledShip()
     {
-        controlIndex = controlIndex == 0 ? 1 : 0;
+        controlIndex++;
+        if (controlIndex > controlledTargetingSystem.VisibleTargets.Count - 1) controlIndex = 0;
         ChangeShipController(controlIndex);
     }
 
     private void ChangeShipController(int shipId)
     {
         controlledShip = ControllableShips[shipId];
+        controlledTargetingSystem = controlledShip.TargetingSystem;
 
-        ChaseView.ChangeFollowed(controlledShip);
+        ChaseView.ChangeFollowed(controlledShip.TargetingSystem);
         ShipStatusView.ChangeController(controlledShip);
-        if (controlledShip.Target) TargetStatusView.ChangeController(controlledShip.Target.Ship);
+        if (controlledTargetingSystem.Target) TargetStatusView.ChangeController(controlledTargetingSystem.Target.Ship);
         EnginesView.ChangeController(controlledShip.Engines);
     }
 
@@ -72,11 +75,11 @@ public class TacticalView : MonoBehaviour
 
         HullIntegrity.text = "Hull: " + UIHelpers.ToOneDecimalPoint(controlledShip.CurrentHealth);
 
-        if (controlledShip.Target != null)
+        if (controlledTargetingSystem.Target != null)
         {
-            TargetHullIntegrity.text = UIHelpers.ToOneDecimalPoint(controlledShip.Target.CurrentHealth);
-            tHeading.text = controlledShip.TargetHeading.ToString();
-            relHeading.text = controlledShip.TargetRelativeHeading().ToString();
+            TargetHullIntegrity.text = UIHelpers.ToOneDecimalPoint(controlledTargetingSystem.Target.CurrentHealth);
+            // tHeading.text = controlledTargetingSystem.TargetHeading.ToString();
+            // relHeading.text = controlledTargetingSystem.TargetRelativeHeading().ToString();
         }
 
         if (Input.GetKeyDown(KeyCode.C))
@@ -101,7 +104,7 @@ public class TacticalView : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Backslash))
         {
-            controlledShip.ClearTarget();
+            controlledTargetingSystem.ClearTarget();
         }
 
         if (Input.GetKeyDown(KeyCode.Z))

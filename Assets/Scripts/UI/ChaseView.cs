@@ -2,18 +2,18 @@
 
 public class ChaseView : MonoBehaviour
 {
-    private Ship followedShip;
+    private TargetingSystem targetingSystem;
 
     public Transform FollowTransform { get; private set; }
     public Transform TargetTransform { get; private set; }
 
-    public void ChangeFollowed(Ship newShip)
+    public void ChangeFollowed(TargetingSystem newTargetingSystem)
     {
-        if (followedShip != null) followedShip.TargetChanged -= TargetChangedHandler;
-        followedShip = newShip;
-        FollowTransform = newShip.transform;
-        TargetTransform = newShip.Target == null ? null : newShip.Target.transform;
-        followedShip.TargetChanged += TargetChangedHandler;
+        if (targetingSystem != null) targetingSystem.TargetChanged -= TargetChangedHandler;
+        targetingSystem = newTargetingSystem;
+        FollowTransform = newTargetingSystem.transform;
+        TargetTransform = newTargetingSystem.Target == null ? null : newTargetingSystem.Target.transform;
+        targetingSystem.TargetChanged += TargetChangedHandler;
     }
 
     private void TargetChangedHandler(Targetable target)
