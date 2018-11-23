@@ -16,9 +16,9 @@ public class StatusView : MonoBehaviour // TODO move hardpoints stuff into a Har
     {
         // Facing view
         if (IsOwnShipStatus)
-            facingView.ChangeModel(newShip.TargetingSystem.TargetFacing);
+            facingView.ChangeModel(newShip.TargetingSystem.TargetFacingModel);
         else
-            shipController.TargetingSystem.TargetRelativeFacingChanged += facingView.UpdateFacing;
+            facingView.ChangeModel(newShip.TargetingSystem.TargetRelativeFacingModel);
 
         // Shields view 
         shieldsView.ChangeController(newShip.Shields);

@@ -11,11 +11,9 @@ public class TargetingSystem : MonoBehaviour
     private MountedWeapon[] mountedWeapons;
 
     public event Action<Targetable> TargetChanged = delegate { };
-    public event Action<Facing> TargetFacingChanged = delegate { };
-    public event Action<Facing> TargetRelativeFacingChanged = delegate { };
 
     public List<Targetable> VisibleTargets = new List<Targetable>();
-    public FacingModel TargetFacing { get; private set; } = new FacingModel();
+    public FacingModel TargetFacingModel { get; private set; } = new FacingModel();
     public FacingModel TargetRelativeFacingModel { get; private set; } = new FacingModel();
     public Targetable Target
     {

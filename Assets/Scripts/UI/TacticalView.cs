@@ -13,8 +13,6 @@ public class TacticalView : MonoBehaviour
 
     public Text HullIntegrity; // TODO move to status view
     public Text TargetHullIntegrity; // TODO move to status view
-    public Text tHeading;
-    public Text relHeading;
 
     private int controlIndex = 0;
     private int targetIndex = 0;
