@@ -42,7 +42,7 @@ public class TacticalView : MonoBehaviour
     private void CycleControlledShip()
     {
         controlIndex++;
-        if (controlIndex > controlledTargetingSystem.VisibleTargets.Count - 1) controlIndex = 0;
+        if (controlIndex > ControllableShips.Length - 1) controlIndex = 0;
         ChangeShipController(controlIndex);
     }
 

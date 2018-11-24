@@ -21,17 +21,15 @@ public class TargetingSystem : MonoBehaviour
         private set
         {
             if (value == target) return;
-            if (value == null)
-            {
-                isUpdatingFacings = false;
-            }
+
+            target = value;
+            TargetChanged(target);
+            if (value == null) isUpdatingFacings = false;
             else
             {
                 isUpdatingFacings = true;
                 StartCoroutine(UpdateTargetFacings());
             }
-            target = value;
-            TargetChanged(target);
         }
     }
     public Facing TargetFacing
@@ -59,7 +57,7 @@ public class TargetingSystem : MonoBehaviour
 
     private IEnumerator UpdateTargetFacings()
     {
-        while (isUpdatingFacings)
+        while (isUpdatingFacings && target)
         {
             float targetHeading = Helpers.CalculateHorizonHeading(transform.forward, target.Position - transform.position);
             TargetFacing = Facing.GetFacingByHeading(targetHeading);
