@@ -10,6 +10,7 @@ public class ShieldsView : MonoBehaviour
     public void ChangeController(Shields newShields)
     {
         if (shields != null) shields.ShieldDamaged -= UpdateShieldView;
+        if (newShields == null) return;
         shields = newShields;
         shields.ShieldDamaged += UpdateShieldView;
 

@@ -14,17 +14,25 @@ public class StatusView : MonoBehaviour // TODO move hardpoints stuff into a Har
 
     public void ChangeController(Ship newShip)
     {
-        // Facing view
-        if (IsOwnShipStatus)
-            facingView.ChangeModel(newShip.TargetingSystem.TargetFacingModel);
-        else
-            facingView.ChangeModel(newShip.TargetingSystem.TargetRelativeFacingModel);
-
-        // Shields view 
-        shieldsView.ChangeController(newShip.Shields);
+        if (newShip == null) 
+        {
+            facingView.ChangeModel(null);
+            shieldsView.ChangeController(null);
+        } 
+        else 
+        {
+            // Facing view
+            if (IsOwnShipStatus)
+                facingView.ChangeModel(newShip.TargetingSystem.TargetFacingModel);
+            else
+                facingView.ChangeModel(newShip.TargetingSystem.TargetRelativeFacingModel); 
+                Debug.Log("status view is passing id "+newShip.TargetingSystem.TargetRelativeFacingModel.id);
+            // Shields view 
+            shieldsView.ChangeController(newShip.Shields);
+        }
 
         // Hardpoint views
-        if (currentStatusPrefab != null)
+        if (currentStatusPrefab != null) // cleanup
         {
             foreach (HardpointView view in hardpointViews)
             {
@@ -34,11 +42,18 @@ public class StatusView : MonoBehaviour // TODO move hardpoints stuff into a Har
             SelectedHardpointViews.Clear();
             Destroy(currentStatusPrefab);
         }
+        if(newShip == null) return;
 
+        // connect new hardpoints
         currentStatusPrefab = Instantiate(newShip.StatusUIPrefab, transform);
         hardpointViews.AddRange(currentStatusPrefab.GetComponentsInChildren<HardpointView>());
         SelectedHardpointViews.AddRange(hardpointViews);
         MapViewsToControllers(hardpointViews, newShip.Hardpoints);
+    }
+
+    public void ChangeTarget()
+    {
+        
     }
 
     private void MapViewsToControllers(IEnumerable<HardpointView> views, List<Hardpoint> controllers)

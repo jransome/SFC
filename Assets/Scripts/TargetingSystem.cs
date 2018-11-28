@@ -1,45 +1,42 @@
 ﻿using System;
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TargetingSystem : MonoBehaviour
 {
-    private bool isUpdatingFacings = true;
-    private Targetable target;
+    private Targetable target = null;
     private MountedWeapon[] mountedWeapons;
+    private bool isUpdatingFacings;
 
     public event Action<Targetable> TargetChanged = delegate { };
 
     public List<Targetable> VisibleTargets = new List<Targetable>();
-    public FacingModel TargetFacingModel { get; private set; } = new FacingModel();
-    public FacingModel TargetRelativeFacingModel { get; private set; } = new FacingModel();
+    // public FacingModel TargetFacingModel { get; } = new FacingModel();
+    // public FacingModel TargetRelativeFacingModel { get; } = new FacingModel();
+    public FacingModel TargetFacingModel;
+    public FacingModel TargetRelativeFacingModel;
     public Targetable Target
     {
         get { return target ? target : null; }
         private set
         {
             if (value == target) return;
-
+            if (target != null) target.RemoveFromTargetedBy(this);
             target = value;
+            target.AddToTargetedBy(this);
             TargetChanged(target);
-            if (value == null) isUpdatingFacings = false;
-            else
-            {
-                isUpdatingFacings = true;
-                StartCoroutine(UpdateTargetFacings());
-            }
+            if (value != null && !isUpdatingFacings) StartCoroutine(UpdateTargetFacings());
         }
     }
     public Facing TargetFacing
     {
-        get { return target ? TargetFacingModel.CurrentFacing : null; }
+        get { return TargetFacingModel.CurrentFacing; }
         private set { TargetFacingModel.CurrentFacing = value; }
     }
     public Facing TargetRelativeFacing 
     {   // Returns the facing of this ship from the target's perspective
-        get { return target ? TargetRelativeFacingModel.CurrentFacing : null; }
+        get { return TargetRelativeFacingModel.CurrentFacing; }
         private set { TargetRelativeFacingModel.CurrentFacing = value; }
     }
 
@@ -53,11 +50,14 @@ public class TargetingSystem : MonoBehaviour
     public void ClearTarget()
     {
         SetTarget(null);
+        TargetFacing = Facing.None;
+        TargetRelativeFacing = Facing.None;
     }
 
     private IEnumerator UpdateTargetFacings()
     {
-        while (isUpdatingFacings && target)
+        isUpdatingFacings = true;
+        while (target)
         {
             float targetHeading = Helpers.CalculateHorizonHeading(transform.forward, target.Position - transform.position);
             TargetFacing = Facing.GetFacingByHeading(targetHeading);
@@ -67,10 +67,13 @@ public class TargetingSystem : MonoBehaviour
 
             yield return new WaitForSeconds(0.3f);
         }
+        isUpdatingFacings = false;
     }
 
     private void Start() 
     {
         mountedWeapons = GetComponentsInChildren<MountedWeapon>();
+        TargetFacingModel = new FacingModel();
+        TargetRelativeFacingModel = new FacingModel();
     }
 }

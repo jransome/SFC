@@ -52,9 +52,10 @@ public class TacticalView : MonoBehaviour
         controlledTargetingSystem = controlledShip.TargetingSystem;
 
         ChaseView.ChangeFollowed(controlledShip.TargetingSystem);
-        ShipStatusView.ChangeController(controlledShip);
-        if (controlledTargetingSystem.Target) TargetStatusView.ChangeController(controlledTargetingSystem.Target.Ship);
         EnginesView.ChangeController(controlledShip.Engines);
+        ShipStatusView.ChangeController(controlledShip);
+        Ship TargetShip = controlledTargetingSystem.Target ? controlledTargetingSystem.Target.Ship : null;
+        TargetStatusView.ChangeController(TargetShip);
     }
 
     private void Start()

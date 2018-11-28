@@ -1,5 +1,6 @@
 ﻿public class Facing
 {
+    public static Facing None { get; } = new Facing(-1);
     public static Facing Bow { get; } = new Facing(0);
     public static Facing PortBow { get; } = new Facing(1);
     public static Facing StarboardBow { get; } = new Facing(2);
