@@ -8,6 +8,8 @@ public class TacticalView : MonoBehaviour
     public ChaseView ChaseView;
     public StatusView ShipStatusView;
     public StatusView TargetStatusView;
+    public FacingView ShipFacingView;
+    public FacingView TargetFacingView;
     public WeaponsView WeaponsView;
     public EnginesView EnginesView;
 
@@ -53,7 +55,11 @@ public class TacticalView : MonoBehaviour
 
         ChaseView.ChangeFollowed(controlledShip.TargetingSystem);
         EnginesView.ChangeController(controlledShip.Engines);
+
+        ShipFacingView.ChangeModel(controlledShip.TargetingSystem.TargetFacingModel);
         ShipStatusView.ChangeController(controlledShip);
+
+        TargetFacingView.ChangeModel(controlledShip.TargetingSystem.TargetRelativeFacingModel);
         Ship TargetShip = controlledTargetingSystem.Target ? controlledTargetingSystem.Target.Ship : null;
         TargetStatusView.ChangeController(TargetShip);
     }
