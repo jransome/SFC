@@ -5,7 +5,6 @@ public class StatusView : MonoBehaviour // TODO move hardpoints stuff into a Har
 {
     public bool IsOwnShipStatus = true;
     public ShieldsView shieldsView;
-    public FacingView facingView;
 
     private GameObject currentStatusPrefab;
     private List<HardpointView> hardpointViews = new List<HardpointView>();
@@ -14,17 +13,12 @@ public class StatusView : MonoBehaviour // TODO move hardpoints stuff into a Har
 
     public void ChangeController(Ship newShip)
     {
-        // Facing view
-        if (IsOwnShipStatus)
-            facingView.ChangeModel(newShip.TargetingSystem.TargetFacing);
-        else
-            shipController.TargetingSystem.TargetRelativeFacingChanged += facingView.UpdateFacing;
-
         // Shields view 
-        shieldsView.ChangeController(newShip.Shields);
+        if (newShip == null) shieldsView.ChangeController(null);
+        else shieldsView.ChangeController(newShip.Shields);
 
         // Hardpoint views
-        if (currentStatusPrefab != null)
+        if (currentStatusPrefab != null) // cleanup
         {
             foreach (HardpointView view in hardpointViews)
             {
@@ -34,7 +28,9 @@ public class StatusView : MonoBehaviour // TODO move hardpoints stuff into a Har
             SelectedHardpointViews.Clear();
             Destroy(currentStatusPrefab);
         }
+        if(newShip == null) return;
 
+        // connect new hardpoints
         currentStatusPrefab = Instantiate(newShip.StatusUIPrefab, transform);
         hardpointViews.AddRange(currentStatusPrefab.GetComponentsInChildren<HardpointView>());
         SelectedHardpointViews.AddRange(hardpointViews);

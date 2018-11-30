@@ -44,7 +44,10 @@ public class HardpointView : MonoBehaviour
 
     void Update() // TODO get rid of this 
     {
-        chargeStatus.text = hardpoint.MountedWeapon.ChargePercent.ToString();
+        chargeStatus.text = hardpoint
+            .MountedWeapon
+            .ChargePercent
+            .ToString();
     }
 
     private void Awake()

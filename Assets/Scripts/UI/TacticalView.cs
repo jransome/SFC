@@ -8,13 +8,13 @@ public class TacticalView : MonoBehaviour
     public ChaseView ChaseView;
     public StatusView ShipStatusView;
     public StatusView TargetStatusView;
+    public FacingView ShipFacingView;
+    public FacingView TargetFacingView;
     public WeaponsView WeaponsView;
     public EnginesView EnginesView;
 
     public Text HullIntegrity; // TODO move to status view
     public Text TargetHullIntegrity; // TODO move to status view
-    public Text tHeading;
-    public Text relHeading;
 
     private int controlIndex = 0;
     private int targetIndex = 0;
@@ -44,7 +44,7 @@ public class TacticalView : MonoBehaviour
     private void CycleControlledShip()
     {
         controlIndex++;
-        if (controlIndex > controlledTargetingSystem.VisibleTargets.Count - 1) controlIndex = 0;
+        if (controlIndex > ControllableShips.Length - 1) controlIndex = 0;
         ChangeShipController(controlIndex);
     }
 
@@ -54,9 +54,14 @@ public class TacticalView : MonoBehaviour
         controlledTargetingSystem = controlledShip.TargetingSystem;
 
         ChaseView.ChangeFollowed(controlledShip.TargetingSystem);
-        ShipStatusView.ChangeController(controlledShip);
-        if (controlledTargetingSystem.Target) TargetStatusView.ChangeController(controlledTargetingSystem.Target.Ship);
         EnginesView.ChangeController(controlledShip.Engines);
+
+        ShipFacingView.ChangeModel(controlledShip.TargetingSystem.TargetFacingModel);
+        ShipStatusView.ChangeController(controlledShip);
+
+        TargetFacingView.ChangeModel(controlledShip.TargetingSystem.TargetRelativeFacingModel);
+        Ship TargetShip = controlledTargetingSystem.Target ? controlledTargetingSystem.Target.Ship : null;
+        TargetStatusView.ChangeController(TargetShip);
     }
 
     private void Start()

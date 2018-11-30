@@ -53,23 +53,11 @@ public class Beam : MountedWeapon
                 // damage is only dealt once the beam has hit the target, therefore total damage dealt is slightly less (unless beam hits instantly)
                 foreach (RaycastHit hit in hits)
                 {
-                    try
-                    { // in a try as a Null ref exception was thrown once but haven't been able to reproduce since
-                        float leftoverAttack = hit
-                            .collider
-                            .GetComponent<IDamageable>()
-                            .ApplyDamage(damagePerStep, initialTargetDirection);
-
-                        if (leftoverAttack == 0) // weapon energy completely absorbed
-                        {
-                            distanceCovered = hit.distance;
-                            break;
-                        }
-                    }
-                    catch (Exception e)
+                    IDamageable damageable = hit.collider.GetComponent<IDamageable>();
+                    if (damageable == null || damageable.ApplyDamage(damagePerStep, initialTargetDirection) == 0) // not damagable OR weapon energy completely absorbed
                     {
-                        Debug.LogError(e);
-                        Debug.Break();
+                        distanceCovered = hit.distance;
+                        break;
                     }
                 }
             }

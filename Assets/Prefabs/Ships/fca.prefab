@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 114882738894931960}
   - component: {fileID: 114423645851143462}
   - component: {fileID: 114965380213632626}
+  - component: {fileID: 114359623220355740}
   m_Layer: 0
   m_Name: fca
   m_TagString: Untagged
@@ -583,7 +584,7 @@ MonoBehaviour:
   DevicePrefab: {fileID: 1773218679695288, guid: 407769cd3bcd4034ea55dbaf08e320ba,
     type: 2}
   ArcCentre: 90
-  ArcRange: 180
+  ArcRange: 190
 --- !u!114 &114280206172639414
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -595,12 +596,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45d138f71690c8041b08d6c82b7fadfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LogSuff: 0
   ShieldRatings:
-  - 25
-  - 25
-  - 25
-  - 25
+  - 10
+  - 10
+  - 10
+  - 10
+--- !u!114 &114359623220355740
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1096947154491726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45ca8a1d1b8414b4e974966df85fa875, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VisibleTargets:
+  - {fileID: 0}
 --- !u!114 &114423645851143462
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -612,7 +625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d97088face0d00c47a06ad8e59cb8d04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartingHitPoints: 400
+  StartingHitPoints: 500
   hp: 0
 --- !u!114 &114742039138818032
 MonoBehaviour:
@@ -628,7 +641,7 @@ MonoBehaviour:
   DevicePrefab: {fileID: 1438614421352070, guid: 1b33a276ee7d1de4793cd91c52bb4a0c,
     type: 2}
   ArcCentre: 0
-  ArcRange: 180
+  ArcRange: 90
 --- !u!114 &114831280875030976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -643,7 +656,7 @@ MonoBehaviour:
   DevicePrefab: {fileID: 1773218679695288, guid: 407769cd3bcd4034ea55dbaf08e320ba,
     type: 2}
   ArcCentre: 270
-  ArcRange: 180
+  ArcRange: 190
 --- !u!114 &114882738894931960
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -657,9 +670,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StatusUIPrefab: {fileID: 1964549621727174, guid: d807b94c0f2a23249b706edfd391ca4f,
     type: 2}
-  VisibleTargets:
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &114965380213632626
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -671,8 +681,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 628722209d392c94ea5a560b70dddf27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Acceleration: 0.02
-  YawRate: 12
+  MaxSpeed: 30
+  MaxReverseSpeed: 5
+  Acceleration: 0.05
+  YawRate: 15
   RollSmooth: 0.3
   RollRate: 50
   MaxRollAngle: 35
