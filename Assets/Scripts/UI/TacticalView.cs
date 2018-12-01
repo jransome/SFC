@@ -3,8 +3,6 @@ using UnityEngine.UI;
 
 public class TacticalView : MonoBehaviour
 {
-    public Ship[] ControllableShips; // TODO move out to a game manager type thing
-
     public ChaseView ChaseView;
     public StatusView ShipStatusView;
     public StatusView TargetStatusView;
@@ -16,7 +14,6 @@ public class TacticalView : MonoBehaviour
     public Text HullIntegrity; // TODO move to status view
     public Text TargetHullIntegrity; // TODO move to status view
 
-    private int controlIndex = 0;
     private int targetIndex = 0;
     private Ship controlledShip;
     private TargetingSystem controlledTargetingSystem;
@@ -43,14 +40,12 @@ public class TacticalView : MonoBehaviour
 
     private void CycleControlledShip()
     {
-        controlIndex++;
-        if (controlIndex > ControllableShips.Length - 1) controlIndex = 0;
-        ChangeShipController(controlIndex);
+        ChangeShipController(GameManager.Instance.GetNextControllable());
     }
 
-    private void ChangeShipController(int shipId)
+    private void ChangeShipController(Ship newShip)
     {
-        controlledShip = ControllableShips[shipId];
+        controlledShip = newShip;
         controlledTargetingSystem = controlledShip.TargetingSystem;
 
         ChaseView.ChangeFollowed(controlledShip.TargetingSystem);
@@ -66,12 +61,14 @@ public class TacticalView : MonoBehaviour
 
     private void Start()
     {
-        if (Instance == null)
-            Instance = this;
-        else if (Instance != this)
+        if (Instance == null) Instance = this;
+        else if (Instance != this) 
+        {
+            Debug.LogError("Instance of TacticalView already exists!");
             Destroy(gameObject);
+        }
 
-        ChangeShipController(0);
+        ChangeShipController(GameManager.Instance.CurrentControllable);
     }
 
     private void Update()
@@ -83,8 +80,6 @@ public class TacticalView : MonoBehaviour
         if (controlledTargetingSystem.Target != null)
         {
             TargetHullIntegrity.text = UIHelpers.ToOneDecimalPoint(controlledTargetingSystem.Target.CurrentHealth);
-            // tHeading.text = controlledTargetingSystem.TargetHeading.ToString();
-            // relHeading.text = controlledTargetingSystem.TargetRelativeHeading().ToString();
         }
 
         if (Input.GetKeyDown(KeyCode.C))

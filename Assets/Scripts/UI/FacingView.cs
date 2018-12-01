@@ -14,14 +14,12 @@ public class FacingView : MonoBehaviour
         if (newFacingModel == null) return;
         facingModel = newFacingModel;
         facingModel.TargetFacingChanged += UpdateFacing;
-        if(gameObject.name == "TargetStatus") Debug.Log("target facing view's model id: "+facingModel.id);
 
         UpdateFacing(facingModel.CurrentFacing);
     }
 
     private void UpdateFacing(Facing newFacing)
     {
-        if(gameObject.name == "TargetStatus") Debug.Log(newFacing);
         if (currentFacingGraphic != null) currentFacingGraphic.enabled = false;
         if (newFacing.Index == -1) return;
         currentFacingGraphic = FacingGraphics[newFacing.Index];

@@ -12,8 +12,6 @@ public class TargetingSystem : MonoBehaviour
     public event Action<Targetable> TargetChanged = delegate { };
 
     public List<Targetable> VisibleTargets = new List<Targetable>();
-    // public FacingModel TargetFacingModel { get; } = new FacingModel();
-    // public FacingModel TargetRelativeFacingModel { get; } = new FacingModel();
     public FacingModel TargetFacingModel;
     public FacingModel TargetRelativeFacingModel;
     public Targetable Target

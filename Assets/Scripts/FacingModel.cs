@@ -13,7 +13,6 @@ public class FacingModel
   {
       counter++;
       id = counter;
-      Debug.Log("facing model "+id);
   }
 
   public Facing CurrentFacing
@@ -22,7 +21,6 @@ public class FacingModel
     set
     {
       if (currentFacing == value) return;
-      Debug.Log(id + "id - index" + value.Index);
       currentFacing = value;
       TargetFacingChanged(value);
     }

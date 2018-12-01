@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3731196, g: 0.38074002, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -221,12 +221,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d7dbe40adf552458bf5235e22db334, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ControllableShips:
-  - {fileID: 176319861}
-  - {fileID: 533647512}
   ChaseView: {fileID: 284574737}
   ShipStatusView: {fileID: 1517747442}
   TargetStatusView: {fileID: 1509834913}
+  ShipFacingView: {fileID: 1517747444}
+  TargetFacingView: {fileID: 1509834914}
   WeaponsView: {fileID: 1517747443}
   EnginesView: {fileID: 365887963}
   HullIntegrity: {fileID: 1976935211}
@@ -306,12 +305,6 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 166466624}
   m_CullTransparentMesh: 0
---- !u!114 &176319861 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114882738894931960, guid: 0f6a132048b0f7d48b2593bc46daf879,
-    type: 2}
-  m_PrefabInternal: {fileID: 1892707256}
-  m_Script: {fileID: 11500000, guid: 97e676ec8aeed1f428307ec7fdba3528, type: 3}
 --- !u!1 &216422575
 GameObject:
   m_ObjectHideFlags: 0
@@ -910,12 +903,6 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 533647510}
   m_Script: {fileID: 11500000, guid: d97088face0d00c47a06ad8e59cb8d04, type: 3}
---- !u!114 &533647512 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114882738894931960, guid: 0f6a132048b0f7d48b2593bc46daf879,
-    type: 2}
-  m_PrefabInternal: {fileID: 533647510}
-  m_Script: {fileID: 11500000, guid: 97e676ec8aeed1f428307ec7fdba3528, type: 3}
 --- !u!1 &651010109
 GameObject:
   m_ObjectHideFlags: 0
@@ -1218,6 +1205,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 948216134}
+  - component: {fileID: 948216133}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1225,6 +1213,17 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &948216133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 948216132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e1b9c4ddd92ce44d997fca8648d620f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &948216134
 Transform:
   m_ObjectHideFlags: 0
@@ -2120,7 +2119,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsOwnShipStatus: 0
   shieldsView: {fileID: 1756521320}
-  facingView: {fileID: 1509834914}
 --- !u!114 &1509834914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2191,7 +2189,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsOwnShipStatus: 1
   shieldsView: {fileID: 1319314313}
-  facingView: {fileID: 1517747444}
 --- !u!114 &1517747443
 MonoBehaviour:
   m_ObjectHideFlags: 0
