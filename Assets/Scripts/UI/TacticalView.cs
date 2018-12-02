@@ -67,7 +67,6 @@ public class TacticalView : MonoBehaviour
             Debug.LogError("Instance of TacticalView already exists!");
             Destroy(gameObject);
         }
-
         ChangeShipController(GameManager.Instance.CurrentControllable);
     }
 

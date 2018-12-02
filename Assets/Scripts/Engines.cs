@@ -53,15 +53,20 @@ public class Engines : MonoBehaviour
         }
     }
 
-    public void ChangeDesiredSpeed(int amount)
+    public void ChangeDesiredSpeed(int delta)
     {
-        DesiredSpeed += amount;
+        DesiredSpeed += delta;
     }
 
     public void UpdateTurningOrder(Vector3 mapClickPoint)
     {
         targetDirection = Vector3.Normalize(mapClickPoint - transform.position);
         turnDirection = Mathf.Sign(Vector3.Cross(transform.forward, targetDirection).y);
+    }
+
+    public void TurnToDirection(Vector3 direction)
+    {
+        
     }
 
     private void Move()
