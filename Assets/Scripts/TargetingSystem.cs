@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class TargetingSystem : MonoBehaviour
 {
+    [SerializeField] private int sensorRange = 10;
+    [SerializeField] private SphereCollider sensorCollider;
     private Targetable target = null;
     private MountedWeapon[] mountedWeapons;
     private bool isUpdatingFacings;
@@ -32,7 +34,7 @@ public class TargetingSystem : MonoBehaviour
         get { return TargetFacingModel.CurrentFacing; }
         private set { TargetFacingModel.CurrentFacing = value; }
     }
-    public Facing TargetRelativeFacing 
+    public Facing TargetRelativeFacing
     {   // Returns the facing of this ship from the target's perspective
         get { return TargetRelativeFacingModel.CurrentFacing; }
         private set { TargetRelativeFacingModel.CurrentFacing = value; }
@@ -68,10 +70,23 @@ public class TargetingSystem : MonoBehaviour
         isUpdatingFacings = false;
     }
 
-    private void Start() 
+    private void OnTriggerEnter(Collider other)
+    {
+        Targetable t = other.GetComponent<Targetable>();
+        if(t != null && !VisibleTargets.Exists(target => target == t)) VisibleTargets.Add(t);
+    }
+    
+    private void OnTriggerExit(Collider other)
+    {
+        Targetable t = other.GetComponent<Targetable>();
+        if(t != null && VisibleTargets.Exists(target => target == t)) VisibleTargets.Remove(t);
+    }
+
+    private void Start()
     {
         mountedWeapons = GetComponentsInChildren<MountedWeapon>();
         TargetFacingModel = new FacingModel();
         TargetRelativeFacingModel = new FacingModel();
+        sensorCollider.radius = sensorRange;
     }
 }

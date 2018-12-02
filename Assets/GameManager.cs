@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
         controllableShips = new List<Ship>(GameObject.FindObjectsOfType<Ship>());
     }
 
-    private void Start()
+    private void Awake()
     {
         if (Instance == null) Instance = this;
         else if (Instance != this)
