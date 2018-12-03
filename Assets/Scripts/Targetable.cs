@@ -4,8 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Ship))]
 public class Targetable : MonoBehaviour, IDamageable
 {
-    public float StartingHitPoints = 10f;
-
+    [SerializeField] private float startingHitPoints = 10f;
+    [SerializeField] private bool isCollidable = false;
     private Transform t;
     private Rigidbody rb;
     private Ship ship;
@@ -37,7 +37,7 @@ public class Targetable : MonoBehaviour, IDamageable
 
     public float CurrentSpeed
     {
-        get { return engines.CurrentSpeed; }
+        get { return engines ? engines.CurrentSpeed : 0f; }
     }
 
     public IList<float> ShieldCurrentHealths
@@ -70,7 +70,7 @@ public class Targetable : MonoBehaviour, IDamageable
         t = transform;
         rb = GetComponent<Rigidbody>();
         ship = GetComponent<Ship>();
-        health = new Health(StartingHitPoints);
+        health = new Health(startingHitPoints);
         shields = GetComponentInChildren<Shields>();
         engines = GetComponent<Engines>();
     }

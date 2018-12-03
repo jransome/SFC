@@ -6,8 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Shields : MonoBehaviour, IDamageable
 {
-    public float[] ShieldRatings = {10f, 10f, 10f, 10f}; // Bow, Bow flanks, Stern flanks, Stern
-
+    [SerializeField] private float[] ShieldRatings = {10f, 10f, 10f, 10f}; // Bow, Bow flanks, Stern flanks, Stern
     private Collider shieldCollider;
     private Dictionary<Facing, Health> shieldHealths;
 
