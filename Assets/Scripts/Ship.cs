@@ -18,9 +18,9 @@ public class Ship : MonoBehaviour
     private void Awake()
     {
         self = GetComponent<Targetable>();
-        Hardpoints = new List<Hardpoint>(GetComponentsInChildren<Hardpoint>());
-        Shields = GetComponentInChildren<Shields>();
         Engines = GetComponent<Engines>();
         TargetingSystem = GetComponent<TargetingSystem>();
+        Shields = GetComponentInChildren<Shields>();
+        Hardpoints = new List<Hardpoint>(GetComponentsInChildren<Hardpoint>());
     }
 }

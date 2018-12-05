@@ -5,11 +5,10 @@ using UnityEngine;
 
 public class TargetingSystem : MonoBehaviour
 {
-    [SerializeField] private int sensorRange = 10;
-    [SerializeField] private SphereCollider sensorCollider;
     private Targetable target = null;
     private MountedWeapon[] mountedWeapons;
     private bool isUpdatingFacings;
+    private int targetIndex = 0;
 
     public event Action<Targetable> TargetChanged = delegate { };
 
@@ -24,9 +23,12 @@ public class TargetingSystem : MonoBehaviour
             if (value == target) return;
             if (target != null) target.RemoveFromTargetedBy(this);
             target = value;
-            target.AddToTargetedBy(this);
             TargetChanged(target);
-            if (value != null && !isUpdatingFacings) StartCoroutine(UpdateTargetFacings());
+            if (target != null) 
+            {
+                target.AddToTargetedBy(this);
+                if (!isUpdatingFacings) StartCoroutine(UpdateTargetFacings());
+            }
         }
     }
     public Facing TargetFacing
@@ -40,11 +42,19 @@ public class TargetingSystem : MonoBehaviour
         private set { TargetRelativeFacingModel.CurrentFacing = value; }
     }
 
-    public void SetTarget(Targetable newTarget) // TODO move out weapons stuff
+    public void SetTarget(Targetable newTarget) // TODO move out weapons stuff?
     {
         Target = newTarget;
         foreach (var weapon in mountedWeapons)
             weapon.Target = Target;
+    }
+
+    public void CycleNextTarget()
+    {
+        if (VisibleTargets.Count == 0) return;
+        targetIndex++;
+        Targetable nextTarget = VisibleTargets[targetIndex % VisibleTargets.Count];
+        SetTarget(nextTarget);
     }
 
     public void ClearTarget()
@@ -70,23 +80,12 @@ public class TargetingSystem : MonoBehaviour
         isUpdatingFacings = false;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Targetable t = other.GetComponent<Targetable>();
-        if(t != null && !VisibleTargets.Exists(target => target == t)) VisibleTargets.Add(t);
-    }
-    
-    private void OnTriggerExit(Collider other)
-    {
-        Targetable t = other.GetComponent<Targetable>();
-        if(t != null && VisibleTargets.Exists(target => target == t)) VisibleTargets.Remove(t);
-    }
-
     private void Start()
     {
         mountedWeapons = GetComponentsInChildren<MountedWeapon>();
         TargetFacingModel = new FacingModel();
         TargetRelativeFacingModel = new FacingModel();
-        sensorCollider.radius = sensorRange;
+        Targetable self = GetComponent<Targetable>();
+        VisibleTargets = GameManager.Instance.Targetables.FindAll(t => t != self);
     }
 }

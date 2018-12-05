@@ -14,7 +14,6 @@ public class TacticalView : MonoBehaviour
     public Text HullIntegrity; // TODO move to status view
     public Text TargetHullIntegrity; // TODO move to status view
 
-    private int targetIndex = 0;
     private Ship controlledShip;
     private TargetingSystem controlledTargetingSystem;
     private Plane mapPlane = new Plane(Vector3.up, Vector3.zero);
@@ -28,14 +27,6 @@ public class TacticalView : MonoBehaviour
         float rayDistanceTravelled;
         if (mapPlane.Raycast(ray, out rayDistanceTravelled)) return ray.GetPoint(rayDistanceTravelled);
         return null;
-    }
-
-    private void CycleTargets()
-    {
-        targetIndex++;
-        if (targetIndex > controlledTargetingSystem.VisibleTargets.Count - 1) targetIndex = 0;
-        controlledTargetingSystem.SetTarget(controlledTargetingSystem.VisibleTargets[targetIndex]);
-        TargetStatusView.ChangeController(controlledTargetingSystem.Target.Ship);
     }
 
     private void CycleControlledShip()
@@ -98,7 +89,8 @@ public class TacticalView : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.T))
         {
-            CycleTargets();
+            controlledTargetingSystem.CycleNextTarget();
+            TargetStatusView.ChangeController(controlledTargetingSystem.Target.Ship);
         }
 
         if (Input.GetKeyDown(KeyCode.Backslash))

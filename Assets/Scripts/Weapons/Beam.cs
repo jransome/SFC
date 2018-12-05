@@ -53,7 +53,7 @@ public class Beam : MountedWeapon
                 // damage is only dealt once the beam has hit the target, therefore total damage dealt is slightly less (unless beam hits instantly)
                 foreach (RaycastHit hit in hits)
                 {
-                    IDamageable damageable = hit.collider.GetComponentInParent<IDamageable>();
+                    IDamageable damageable = hit.collider.GetComponent<IDamageable>();
                     if (damageable == null || damageable.ApplyDamage(damagePerStep, initialTargetDirection) == 0) // not damagable OR weapon energy completely absorbed
                     {
                         distanceCovered = hit.distance;

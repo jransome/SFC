@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
     public Ship CurrentControllable { get { return controllableShips[controlIndex]; } }
+    public List<Targetable> Targetables { get; private set; }
 
     public Ship GetNextControllable()
     {
@@ -21,6 +22,11 @@ public class GameManager : MonoBehaviour
         controllableShips = new List<Ship>(GameObject.FindObjectsOfType<Ship>());
     }
 
+    private void FindAllTargetables()
+    {
+        Targetables = new List<Targetable>(GameObject.FindObjectsOfType<Targetable>());
+    }
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -31,5 +37,6 @@ public class GameManager : MonoBehaviour
         }
 
         FindAllControllables();
+        FindAllTargetables();
     }
 }
